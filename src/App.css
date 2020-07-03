@@ -2,3 +2,43 @@
   text-align: center;
 }
 
+.dataentry{
+  position: relative;
+  margin: auto;
+  top: 3em;
+  display: table;
+  width: 90%;
+  background-color: lightcoral;
+  border: 2px solid yellow;
+}
+
+#dataform{
+  position: relative;
+  margin: auto;
+  display: table;
+  width: 90%;
+  border-style: outset;
+  border-width: 6px;
+  border-color: #dedede;
+  background-color: lightskyblue;
+}
+
+.datalabel{
+  position: relative;
+  left: 1em;
+}
+
+.datainput{
+  position: relative;
+  left: 3em;
+  width: 70%;
+  background-color: #dedede;
+  border-style: inset;
+  border-color: crimson;
+}
+
+.datasubmit{
+  background-color: midnightblue;
+  color: ghostwhite;
+}
+
