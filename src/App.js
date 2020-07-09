@@ -24,11 +24,13 @@ function CropUI() {
 } // FUNCTION APP()
 
 function findrecord() {
-  window.open("http://localhost:8080/seedinspection/crops/all");
+  var cropidd = document.getElementById("cropid").value;
+  console.log(cropidd);
+  var seekstring = "http://localhost:8080/seedinspection/crops/" + cropidd;
+  window.open(seekstring);
 } // PUTDATA()
 
 function adddata() {
-  window.open("http://localhost:8080/seedinspection/crops/all");
 } // PUTDATA()
 
 function putdata() {
