@@ -2,6 +2,12 @@
   text-align: center;
 }
 
+.buttondiv{
+  position: relative;
+  width: available;
+  background-color: lime;
+}
+
 .dataentry{
   position: relative;
   margin: auto;
@@ -28,10 +34,19 @@
   left: 1em;
 }
 
-.datainput{
+.datatext{
   position: relative;
   left: 3em;
   width: 70%;
+  background-color: #dedede;
+  border-style: inset;
+  border-color: crimson;
+}
+
+.datanumber{
+  position: relative;
+  left: 3em;
+  width: 3em;
   background-color: #dedede;
   border-style: inset;
   border-color: crimson;
