@@ -23,16 +23,13 @@ function CropUI() {
 
 async function findrecordbyid() {
   var seekval = document.getElementById("cropid").value;
-  console.log(seekval);
-  let dataObj = {};
   let myReq = new Request("http://localhost:8080/seedinspection/crops/" + seekval);
   await fetch(myReq)
       .then(response => response.json())
       .then(data => {
-          dataObj = data.valueOf();
-          document.getElementById("cropname").value = dataObj["cropName"];
-          document.getElementById("cropdescription").value = dataObj["cropDescription"];
-          document.getElementById("cropicccode").value = dataObj["cropICCCode"];
+          document.getElementById("cropname").value = data.valueOf()["cropName"];
+          document.getElementById("cropdescription").value = data.valueOf()["cropDescription"];
+          document.getElementById("cropicccode").value = data.valueOf()["cropICCCode"];
       })
       .catch( function(error){
           console.log("FIND FAILURE:" + error);
@@ -50,9 +47,9 @@ function updatedata() {
 } // UPDATEDATA()
 
 function validateicccode() {
-  var cropcode = document.getElementById("cropicccode").value;
-  console.log(cropcode);
-  if ("" === cropcode || cropcode < 0) {
+  var theCode = document.getElementById("cropicccode").value;
+  console.log(theCode);
+  if ("" === theCode || theCode < 0) {
     alert("Please enter 0 or a number for the ICC Code.");
     return false;
   } // IF
