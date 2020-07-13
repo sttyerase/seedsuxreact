@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import config from 'react-global-configuration';
 
 function CropUI() {
   return (
@@ -24,6 +25,7 @@ function CropUI() {
 async function findrecordbyid() {
   var seekval = document.getElementById("cropid").value;
   let myReq = new Request("http://localhost:8080/seedinspection/crops/" + seekval);
+  if(config.get('debugseedsux')) console.log("Crop Id: " + seekval);
   await fetch(myReq)
       .then(response => response.json())
       .then(data => {
@@ -32,7 +34,8 @@ async function findrecordbyid() {
           document.getElementById("cropicccode").value = data.valueOf()["cropICCCode"];
       })
       .catch( function(error){
-          console.log("FIND FAILURE:" + error);
+          if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
+          document.getElementById("resptext").value = "FIND FAILURE:" + error;
       });
     // document.getElementById("cropdescription").value = json.valueOf().toString();
 } // PUTDATA()
