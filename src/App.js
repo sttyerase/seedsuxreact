@@ -37,11 +37,11 @@ async function findrecordbyid() {
           if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
           document.getElementById("resptext").value = "FIND FAILURE:" + error;
       });
-    // document.getElementById("cropdescription").value = json.valueOf().toString();
-} // PUTDATA()
+} // FINDRECORDBYID()
 
 function adddata() {
     validateicccode();
+    document.getElementById("cropid").value = "";
 } // ADDDATA()
 
 function updatedata() {
@@ -57,5 +57,11 @@ function validateicccode() {
     return false;
   } // IF
 } // VALIDATEICCCODE()
+
+function handleFetchErrors(fresponse) {
+    if(!fresponse.ok){
+        throw Error("Website failed to respond: " + fresponse.statusText);
+    } // IF
+} // HANDLEFETCHERRORS(RESPONSE)
 
 export default CropUI;
