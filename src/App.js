@@ -23,6 +23,7 @@ function CropUI() {
 } // FUNCTION APP()
 
 async function findrecordbyid() {
+    resetAll();
   var seekval = document.getElementById("cropid").value;
   let myReq = new Request("http://localhost:8080/seedinspection/crops/" + seekval);
   if(config.get('debugseedsux')) console.log("Crop Id: " + seekval);
@@ -57,6 +58,10 @@ function validateicccode() {
     return false;
   } // IF
 } // VALIDATEICCCODE()
+
+function resetAll(){
+    document.getElementById("resptext").value = "";
+}
 
 function handleFetchErrors(fresponse) {
     if(!fresponse.ok){
