@@ -23,12 +23,18 @@ function CropUI() {
 } // FUNCTION APP()
 
 async function findrecordbyid() {
-    resetAll();
+  resetAll();
   var seekval = document.getElementById("cropid").value;
   let myReq = new Request("http://localhost:8080/seedinspection/crops/" + seekval);
   if(config.get('debugseedsux')) console.log("Crop Id: " + seekval);
   await fetch(myReq)
-      .then(response => response.json())
+      .then(response => {
+          if(response.status !== 200) {
+              resetForm();
+              throw Error("Id " + seekval + " not found: " + response.statusText);
+          } // IF
+          return response.json();
+      })
       .then(data => {
           document.getElementById("cropname").value = data.valueOf()["cropName"];
           document.getElementById("cropdescription").value = data.valueOf()["cropDescription"];
@@ -61,7 +67,14 @@ function validateicccode() {
 
 function resetAll(){
     document.getElementById("resptext").value = "";
-}
+} // RESETALL()
+
+function resetForm(){
+    document.getElementById("cropid").value = ""
+    document.getElementById("cropname").value = ""
+    document.getElementById("cropdescription").value = "";
+    document.getElementById("cropicccode").value = "";
+}  // RESETFORM()
 
 function handleFetchErrors(fresponse) {
     if(!fresponse.ok){
