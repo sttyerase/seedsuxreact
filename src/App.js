@@ -14,16 +14,17 @@ function CropUI() {
         <label className="datalabel" htmlFor="cropicccode">Crop ICC Code:</label><br/>
         <input id="cropicccode" type="number" className="datanumber"/><br/>
         <div className="buttondiv">
-          <input className="datasubmit" type="button" value="FIND CROP BY ID"   formMethod="POST" onClick={findrecordbyid}/>
-          <input className="datasubmit" type="button" value="UPDATE CROP" formMethod="PUT"  onClick={updatedata}/>
-          <input className="datasubmit" type="button" value="ADD CROP"    formMethod="POST" onClick={adddata}/>
+          <input className="datasubmit" type="button" value="FIND CROP BY ID" onClick={findrecordbyid}/>
+          <input className="datasubmit" type="button" value="UPDATE CROP"     onClick={updatedata}/>
+          <input className="datasubmit" type="button" value="ADD CROP"        onClick={adddata}/>
+          <input className="datasubmit" type="button" value="LIST ALL"        onClick={listAll}/>
+          <input className="datasubmit" type="button" value="CLEAR FORM"      onClick={resetAll}/>
         </div>
       </form>
   );
 } // FUNCTION APP()
 
 async function findrecordbyid() {
-  resetAll();
   var seekval = document.getElementById("cropid").value;
   let myReq = new Request("http://localhost:8080/seedinspection/crops/" + seekval);
   if(config.get('debugseedsux')) console.log("Crop Id: " + seekval);
@@ -31,7 +32,7 @@ async function findrecordbyid() {
       .then(response => {
           if(response.status !== 200) {
               resetForm();
-              throw Error("Id " + seekval + " not found: " + response.statusText);
+              throw Error("Crop Id " + seekval + " not found in database: " + response.statusText);
           } // IF
           return response.json();
       })
@@ -46,6 +47,26 @@ async function findrecordbyid() {
       });
 } // FINDRECORDBYID()
 
+async function listAll(){
+    let myReq = new Request("http://localhost:8080/seedinspection/crops/all");
+    if(config.get('debugseedsux')) console.log("Finding all crops.");
+    await fetch(myReq)
+        .then(response => {
+            if(response.status !== 200) {
+                throw Error("Crop list not found: " + response.statusText);
+            } // IF
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("resptext").value = JSON.stringify(data,null,2);
+        })
+        .catch( function(error){
+            if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
+            document.getElementById("resptext").value = "FIND FAILURE:" + error;
+        });
+} // LISTALLCROPS()
+
+// TODO: ADDDATA() NEEDS TO EVENTUALLY BE A SEPARATE SCREEN
 function adddata() {
     validateicccode();
     document.getElementById("cropid").value = "";
@@ -53,7 +74,6 @@ function adddata() {
 
 function updatedata() {
     validateicccode();
-  window.open("http://localhost:8080/seedinspection/crops/all");
 } // UPDATEDATA()
 
 function validateicccode() {
@@ -66,7 +86,8 @@ function validateicccode() {
 } // VALIDATEICCCODE()
 
 function resetAll(){
-    document.getElementById("resptext").value = "";
+    resetForm();
+    resetMessageBoard();
 } // RESETALL()
 
 function resetForm(){
@@ -75,6 +96,10 @@ function resetForm(){
     document.getElementById("cropdescription").value = "";
     document.getElementById("cropicccode").value = "";
 }  // RESETFORM()
+
+function resetMessageBoard() {
+    document.getElementById("resptext").value = "";
+} // RESETMESSAGEBOARD()
 
 function handleFetchErrors(fresponse) {
     if(!fresponse.ok){
