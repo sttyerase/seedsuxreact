@@ -25,9 +25,10 @@ function CropUI() {
 } // FUNCTION APP()
 
 async function findrecordbyid() {
+  document.getElementById("dataform").setAttribute("method","GET");
   var seekval = document.getElementById("cropid").value;
   let myReq = new Request("http://localhost:8080/seedinspection/crops/" + seekval);
-  if(config.get('debugseedsux')) console.log("Crop Id: " + seekval);
+  if(config.get('debugseedsux')) console.log("Looking for crop id: " + seekval);
   await fetch(myReq)
       .then(response => {
           if(response.status !== 200) {
@@ -48,6 +49,7 @@ async function findrecordbyid() {
 } // FINDRECORDBYID()
 
 async function listAll(){
+    document.getElementById("dataform").setAttribute("method","GET");
     let myReq = new Request("http://localhost:8080/seedinspection/crops/all");
     if(config.get('debugseedsux')) console.log("Finding all crops.");
     await fetch(myReq)
@@ -68,6 +70,7 @@ async function listAll(){
 
 // TODO: ADDDATA() NEEDS TO EVENTUALLY BE A SEPARATE SCREEN
 function adddata() {
+    document.getElementById("dataform").setAttribute("method","POST");
     validateicccode();
     document.getElementById("cropid").value = "";
 } // ADDDATA()
@@ -78,7 +81,7 @@ function updatedata() {
 
 function validateicccode() {
   var theCode = document.getElementById("cropicccode").value;
-  console.log(theCode);
+    if(config.get('debugseedsux')) console.log("Validate ICC Code: " + theCode);
   if ("" === theCode || theCode < 0) {
     alert("Please enter 0 or a number for the ICC Code.");
     return false;
@@ -91,6 +94,7 @@ function resetAll(){
 } // RESETALL()
 
 function resetForm(){
+    if(config.get('debugseedsux')) console.log("Clear the form data.");
     document.getElementById("cropid").value = ""
     document.getElementById("cropname").value = ""
     document.getElementById("cropdescription").value = "";
@@ -98,6 +102,7 @@ function resetForm(){
 }  // RESETFORM()
 
 function resetMessageBoard() {
+    if(config.get('debugseedsux')) console.log("Clear the message board.");
     document.getElementById("resptext").value = "";
 } // RESETMESSAGEBOARD()
 
