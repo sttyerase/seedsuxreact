@@ -71,9 +71,34 @@ async function listAll(){
 } // LISTALLCROPS()
 
 // TODO: ADDDATA() NEEDS TO EVENTUALLY BE A SEPARATE SCREEN
-function adddata() {
+async function adddata() {
     validateicccode();
     document.getElementById("cropid").value = "";
+    let myReq = new Request("http://localhost:8080/seedinspection/crops/new" );
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type","application/json");
+    // let cid = document.getElementById("cropid").value;
+    let cname = document.getElementById("cropname").value;
+    let cdesc = document.getElementById("cropdescription").value;
+    let ciccc = document.getElementById("cropicccode").value;
+    let myBody =  `{"cropName": "${cname}","cropDescription": "${cdesc}","cropICCCode": ${ciccc} }`;
+    const myInit = {method: 'POST',
+        headers: myHeaders,
+        body: myBody};
+    if(config.get('debugseedsux')) console.log("Adding new crop record: " + myBody);
+    await fetch(myReq, myInit)
+        .then(response => {
+            if(response.status !== 200) {
+                resetForm();
+                throw Error("Failed to add new crop record: " + response.status);
+            } // IF
+            document.getElementById("resptext").value = "Successfully added new crop record.";
+            return response.json();
+        })
+        .catch( function(error){
+            if(config.get('debugseedsux')) console.log("NEW RECORD FAILURE:" + error);
+            document.getElementById("resptext").value = "NEW RECORD FAILURE:" + error;
+        });
 } // ADDDATA()
 
 async function updatedata() {
@@ -135,11 +160,5 @@ function resetMessageBoard() {
     if(config.get('debugseedsux')) console.log("Clear the message board.");
     document.getElementById("resptext").value = "";
 } // RESETMESSAGEBOARD()
-
-function handleFetchErrors(fresponse) {
-    if(!fresponse.ok){
-        throw Error("Website failed to respond: " + fresponse.statusText);
-    } // IF
-} // HANDLEFETCHERRORS(RESPONSE)
 
 export default CropUI;
