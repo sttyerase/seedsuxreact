@@ -25,7 +25,6 @@ function CropUI() {
 } // FUNCTION APP()
 
 async function findrecordbyid() {
-  document.getElementById("dataform").setAttribute("method","GET");
   var seekval = document.getElementById("cropid").value;
   let myReq = new Request("http://localhost:8080/seedinspection/crops/" + seekval);
   if(config.get('debugseedsux')) console.log("Looking for crop id: " + seekval);
@@ -38,6 +37,9 @@ async function findrecordbyid() {
           return response.json();
       })
       .then(data => {
+          resetMessageBoard();
+          document.getElementById("resptext").value = "Found crop record for id: " + seekval;
+          document.getElementById("cropid").value = data.valueOf()["cropId"];
           document.getElementById("cropname").value = data.valueOf()["cropName"];
           document.getElementById("cropdescription").value = data.valueOf()["cropDescription"];
           document.getElementById("cropicccode").value = data.valueOf()["cropICCCode"];
@@ -49,7 +51,6 @@ async function findrecordbyid() {
 } // FINDRECORDBYID()
 
 async function listAll(){
-    document.getElementById("dataform").setAttribute("method","GET");
     let myReq = new Request("http://localhost:8080/seedinspection/crops/all");
     if(config.get('debugseedsux')) console.log("Finding all crops.");
     await fetch(myReq)
@@ -60,6 +61,7 @@ async function listAll(){
             return response.json();
         })
         .then(data => {
+            resetForm();
             document.getElementById("resptext").value = JSON.stringify(data,null,2);
         })
         .catch( function(error){
@@ -70,13 +72,41 @@ async function listAll(){
 
 // TODO: ADDDATA() NEEDS TO EVENTUALLY BE A SEPARATE SCREEN
 function adddata() {
-    document.getElementById("dataform").setAttribute("method","POST");
     validateicccode();
     document.getElementById("cropid").value = "";
 } // ADDDATA()
 
-function updatedata() {
+async function updatedata() {
     validateicccode();
+    var seekval = document.getElementById("cropid").value;
+    let myReq = new Request("http://localhost:8080/seedinspection/crops/" + seekval);
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type","application/json");
+    let cid = document.getElementById("cropid").value;
+    let cname = document.getElementById("cropname").value;
+    let cdesc = document.getElementById("cropdescription").value;
+    let ciccc = document.getElementById("cropicccode").value;
+    let myBody =  `{"cropId": ${cid} ,"cropName": "${cname}","cropDescription": "${cdesc}","cropICCCode": ${ciccc} }`;
+    const myInit = {method: 'PUT',
+                    headers: myHeaders,
+                    body: myBody};
+    if(config.get('debugseedsux')) console.log("Updating crop id: " + seekval);
+    if(config.get('debugseedsux')) console.log("Updating crop id: " + myBody);
+    await fetch(myReq, myInit)
+        .then(response => {
+            if(response.status !== 200) {
+                resetForm();
+                throw Error("Crop id " + seekval + " not found in database: " + response.status);
+            } // IF
+            document.getElementById("resptext").value = "Updated crop record for id: " + seekval;
+            return response.json();
+        })
+        .catch( function(error){
+            if(config.get('debugseedsux')) console.log("UPDATE FAILURE:" + error);
+            document.getElementById("resptext").value = "UPDATE FAILURE:" + error;
+        });
+    /** COMMENT OUT FOR DEBUG
+     **/
 } // UPDATEDATA()
 
 function validateicccode() {
