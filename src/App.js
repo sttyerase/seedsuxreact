@@ -17,6 +17,7 @@ function CropUI() {
           <input className="datasubmit" type="button" value="FIND CROP BY ID" onClick={findrecordbyid}/>
           <input className="datasubmit" type="button" value="UPDATE CROP"     onClick={updatedata}/>
           <input className="datasubmit" type="button" value="ADD CROP"        onClick={adddata}/>
+            <input className="datasubmit" type="button" value="DEL CROP"      onClick={deletedata}/>
           <input className="datasubmit" type="button" value="LIST ALL"        onClick={listAll}/>
           <input className="datasubmit" type="button" value="CLEAR FORM"      onClick={resetAll}/>
         </div>
@@ -134,6 +135,38 @@ async function updatedata() {
      **/
 } // UPDATEDATA()
 
+async function deletedata() {
+    validateicccode();
+    var seekval = document.getElementById("cropid").value;
+    var seekname = document.getElementById("cropname").value;
+    let myReq = new Request("http://localhost:8080/seedinspection/crops/delete/" + seekval);
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const myInit = {
+        method: 'DELETE',
+        headers: myHeaders
+    };
+    if (config.get('debugseedsux')) console.log("Deleting crop id: " + seekval);
+    if (config.get('debugseedsux')) console.log("Deleting crop id: " + seekval);
+    await fetch(myReq, myInit)
+        .then(response => {
+            if (response.status !== 200) {
+                resetForm();
+                throw Error("Crop id " + seekval + " not found in database: " + response.status);
+            } // IF
+            document.getElementById("resptext").value = "Deleted crop record for id: " + seekval + " CROP: " + seekname;
+            return response.json();
+        })
+        .catch(function (error) {
+            if (config.get('debugseedsux')) console.log("DELETE FAILURE:" + error);
+            document.getElementById("resptext").value = "DELETE FAILURE:" + error;
+        });
+} // DELETEDATA()
+
+/***
+ * ============== BEGIN SUPPORT FUNCTION SECTION ====================
+ */
+
 function validateicccode() {
   var theCode = document.getElementById("cropicccode").value;
     if(config.get('debugseedsux')) console.log("Validate ICC Code: " + theCode);
@@ -144,8 +177,8 @@ function validateicccode() {
 } // VALIDATEICCCODE()
 
 function resetAll(){
-    resetForm();
     resetMessageBoard();
+    resetForm();
 } // RESETALL()
 
 function resetForm(){
@@ -154,6 +187,7 @@ function resetForm(){
     document.getElementById("cropname").value = ""
     document.getElementById("cropdescription").value = "";
     document.getElementById("cropicccode").value = "";
+    document.getElementById("cropid").focus();
 }  // RESETFORM()
 
 function resetMessageBoard() {
