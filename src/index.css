@@ -9,22 +9,23 @@ body {
 }
 
 #root{
-  border: 3px solid green;
+  border: 6px solid green;
   background-color: brown;
   min-height: 40ex;
 }
 
 #respdiv{
-  position: relative;
   min-height: 30ex;
-  border: 3px solid green;
+  border: 3px outset blueviolet;
   background-color: #91e0c0;
 }
 
 .resptext{
-  position: relative;
-  width: 99%;
+  width: 90%;
+  margin-left: 4%;
+  margin-right: 2%;
   min-height: inherit;
+  border: inset red;
   background-color: lightcyan;
   scroll-behavior: auto;
   font-weight: bold;

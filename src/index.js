@@ -4,7 +4,8 @@ import './index.css';
 import CropUI from "./App";
 import config from 'react-global-configuration';
 
-config.set({debugseedsux: true, sysname: "Seeds UX"})
+let debugux = process.env.DEBUGSEEDSUX;
+config.set({debugseedsux: `${debugux}`, sysname: "Seeds UX"});
 
 ReactDOM.render(
   <React.StrictMode>
