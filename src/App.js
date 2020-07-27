@@ -18,7 +18,7 @@ function CropUI() {
           <input className="datasubmit" type="button" value="UPDATE CROP"     onClick={updatedata}/>
           <input className="datasubmit" type="button" value="ADD CROP"        onClick={adddata}/>
           <input className="datasubmit" type="button" value="DEL CROP"        onClick={deletedata}/>
-          <input className="datasubmit" type="button" value="LIST ALL"        onClick={listAll}/>
+          <input className="datasubmit" type="button" value="LIST BY ID"      onClick={listAll}/>
           <input className="datasubmit" type="button" value="LIST BY NAME"    onClick={listAllByName}/>
           <input className="datasubmit" type="button" value="CLEAR FORM"      onClick={resetAll}/>
           <input className="datasubmit" type="button" value="GET COUNT"       onClick={countCropRecords}/>
@@ -28,6 +28,10 @@ function CropUI() {
 } // FUNCTION APP()
 
 async function findrecordbyid() {
+    if(!validatecropid()) {
+        document.getElementById("cropid").focus();
+        return;
+    } ; // IF
   var seekval = document.getElementById("cropid").value;
   let myReq = new Request("http://localhost:8080/seedinspection/crops/id/" + seekval);
   if(config.get('debugseedsux')) console.log("Looking for crop id: " + seekval);
@@ -77,15 +81,25 @@ async function listAll(){
 async function listAllByName(){
     let myReq = new Request("http://localhost:8080/seedinspection/crops/all");
     if(config.get('debugseedsux')) console.log("Finding all crops by name.");
-    await fetch(myReq)
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type","application/json");
+    const myInit = {method: 'GET',
+        headers: myHeaders};
+    await fetch(myReq,myInit)
         .then(response => {
             if(response.status !== 200) {
                 throw Error("Crop list not found: " + response.status);
             } // IF
-            return response.body;
+            return response.json();
         })
         .then(data => {
-            document.getElementById("resptext").value = data;
+            document.getElementById("resptext").value = JSON.stringify(data.sort((a,b) => {
+                let ca = a.cropName.toLowerCase();
+                let cb = b.cropName.toLowerCase();
+                if(ca < cb){return -1;}
+                if(ca > cb){return 1; }
+                return 0;
+            }),null,2);
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
@@ -95,10 +109,22 @@ async function listAllByName(){
 
 // TODO: ADDDATA() NEEDS TO EVENTUALLY BE A SEPARATE SCREEN
 async function adddata() {
+    // VALIDATE DATA INPUTS
     if(!validateicccode()) {
         document.getElementById("cropicccode").focus();
         return;
-    } ;
+    } ; // IF1
+    if (document.getElementById("cropname").value === "") {
+        alert("Please enter text for the crop name.");
+        document.getElementById("cropname").focus();
+        return;
+    } // IF2
+    if (document.getElementById("cropdescription").value === "") {
+        alert("Please enter text for the crop description.");
+        document.getElementById("cropdescription").focus();
+        return;
+    } // IF3
+    // CROPID IS AUTOINCREMENT. SET ENTRY VALUE TO NULL
     document.getElementById("cropid").value = "";
     let myReq = new Request("http://localhost:8080/seedinspection/crops/new" );
     let myHeaders = new Headers();
@@ -129,6 +155,10 @@ async function adddata() {
 } // ADDDATA()
 
 async function updatedata() {
+    if(!validatecropid()) {
+        document.getElementById("cropid").focus();
+        return;
+    } ; // IF
     if(!validateicccode()) {
         document.getElementById("cropicccode").focus();
         return;
@@ -166,6 +196,10 @@ async function updatedata() {
 } // UPDATEDATA()
 
 async function deletedata() {
+    if(!validatecropid()) {
+        document.getElementById("cropid").focus();
+        return;
+    } ; // IF
     var seekval = document.getElementById("cropid").value;
     var seekname = document.getElementById("cropname").value;
     let myReq = new Request("http://localhost:8080/seedinspection/crops/delete/" + seekval);
@@ -193,7 +227,7 @@ async function deletedata() {
 
 async function countCropRecords() {
     resetMessageBoard();
-    let myReq = new Request("http://localhost:8080/seedinspection/crops/rows");
+    let myReq = new Request("http://localhost:8080/seedinspection/crops/rowcount");
     if(config.get('debugseedsux')) console.log("Retrieving record count for crops.");
     await fetch(myReq)
         .then(response => {
@@ -216,6 +250,16 @@ async function countCropRecords() {
 /***
  * ============== BEGIN SUPPORT FUNCTION SECTION ====================
  */
+
+function validatecropid() {
+    var theId = document.getElementById("cropid").value;
+    if(config.get('debugseedsux')) console.log("Validate crop id entry: " + theId);
+    if ("" === theId || theId < 0) {
+        alert("Please enter 0 or a number for the crop id.");
+        return false;
+    } // IF
+    return true;
+} // VALIDATECROPID()
 
 function validateicccode() {
   var theCode = document.getElementById("cropicccode").value;
