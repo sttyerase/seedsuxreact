@@ -13,7 +13,7 @@ function CropUI() {
         <input id="cropdescription" type="text" className="datatext"/><br/>
         <label className="datalabel" htmlFor="cropicccode">Crop ICC Code:</label><br/>
         <input id="cropicccode" type="number" className="datanumber"/><br/>
-        <div className="buttondiv">
+        <div id="buttondiv">
           <input className="datasubmit" type="button" value="FIND CROP BY ID" onClick={findrecordbyid}/>
           <input className="datasubmit" type="button" value="UPDATE CROP"     onClick={updatedata}/>
           <input className="datasubmit" type="button" value="ADD CROP"        onClick={adddata}/>
@@ -93,13 +93,21 @@ async function listAllByName(){
             return response.json();
         })
         .then(data => {
-            document.getElementById("resptext").value = JSON.stringify(data.sort((a,b) => {
+            data.sort((a,b) => {
                 let ca = a.cropName.toLowerCase();
                 let cb = b.cropName.toLowerCase();
                 if(ca < cb){return -1;}
                 if(ca > cb){return 1; }
                 return 0;
-            }),null,2);
+            });
+            /**
+             **/
+            resetMessageBoard();
+            data.forEach((myD) => {
+                let num = myD.cropId;
+                document.getElementById("resptext").value += (`${num} : ${myD.cropDescription}\n`);
+            });
+            // document.getElementById("resptext").value = JSON.stringify(data,null,2);
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
