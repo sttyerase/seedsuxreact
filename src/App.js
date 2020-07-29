@@ -100,12 +100,12 @@ async function listAllByName(){
                 if(ca > cb){return 1; }
                 return 0;
             });
-            /**
+            /** COMMENT OUT FOR DEBUGGING
              **/
             resetMessageBoard();
             data.forEach((myD) => {
-                let num = myD.cropId;
-                document.getElementById("resptext").value += (`${num} : ${myD.cropDescription}\n`);
+                let num = String("      " + myD.cropId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
+                document.getElementById("resptext").value += (`${num} | ${myD.cropDescription}\n`);
             });
             // document.getElementById("resptext").value = JSON.stringify(data,null,2);
         })
