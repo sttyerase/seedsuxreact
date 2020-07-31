@@ -70,7 +70,12 @@ async function listAll(){
         .then(data => {
             resetForm();
             //TODO: WHY DO I NEED TO "STRINGIFY" A RESPONSE THAT IS ALREADY "STRINGIFIED" AT THE SOURCE??
-            document.getElementById("resptext").value = JSON.stringify(data,null,2);
+            // document.getElementById("resptext").value = JSON.stringify(data,null,2);
+            resetMessageBoard();
+            data.forEach((myD) => {
+                let num = String("      " + myD.cropId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
+                document.getElementById("resptext").value += (`${num} | ${myD.cropDescription}\n`);
+            });
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
