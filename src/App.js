@@ -55,6 +55,7 @@ async function findrecordbyid() {
           if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
           document.getElementById("resptext").value = "FIND FAILURE:" + error;
       });
+  resetFocus();
 } // FINDRECORDBYID()
 
 async function listAll(){
@@ -81,6 +82,7 @@ async function listAll(){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
             document.getElementById("resptext").value = "FIND FAILURE:" + error;
         });
+    resetFocus();
 } // LISTALL()
 
 async function listAllByName(){
@@ -118,6 +120,7 @@ async function listAllByName(){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
             document.getElementById("resptext").value = "FIND FAILURE:" + error;
         });
+    resetFocus();
 } // LISTALLBYNAME()
 
 // TODO: ADDDATA() NEEDS TO EVENTUALLY BE A SEPARATE SCREEN
@@ -165,6 +168,7 @@ async function adddata() {
             if(config.get('debugseedsux')) console.log("NEW RECORD FAILURE:" + error);
             document.getElementById("resptext").value = "NEW RECORD FAILURE:" + error;
         });
+    resetFocus();
 } // ADDDATA()
 
 async function updatedata() {
@@ -206,6 +210,7 @@ async function updatedata() {
         });
     /** COMMENT OUT FOR DEBUG
      **/
+    resetFocus();
 } // UPDATEDATA()
 
 async function deletedata() {
@@ -236,6 +241,7 @@ async function deletedata() {
             if (config.get('debugseedsux')) console.log("DELETE FAILURE:" + error);
             document.getElementById("resptext").value = "DELETE FAILURE:" + error;
         });
+    resetFocus();
 } // DELETEDATA()
 
 async function countCropRecords() {
@@ -257,6 +263,7 @@ async function countCropRecords() {
             if (config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
             document.getElementById("resptext").value = "FIND FAILURE:" + error;
         });
+    resetFocus();
 }
 
 
@@ -287,6 +294,7 @@ function validateicccode() {
 function resetAll(){
     resetMessageBoard();
     resetForm();
+    resetFocus();
 } // RESETALL()
 
 function resetForm(){
@@ -295,12 +303,15 @@ function resetForm(){
     document.getElementById("cropname").value = ""
     document.getElementById("cropdescription").value = "";
     document.getElementById("cropicccode").value = "";
-    document.getElementById("cropid").focus();
 }  // RESETFORM()
 
 function resetMessageBoard() {
     if(config.get('debugseedsux')) console.log("Clear the message board.");
     document.getElementById("resptext").value = "";
 } // RESETMESSAGEBOARD()
+
+function resetFocus() {
+    document.getElementById("cropid").focus();
+} // RESETFOCUS()
 
 export default CropUI;
