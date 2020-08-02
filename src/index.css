@@ -14,10 +14,8 @@ body {
   min-height: 40ex;
 }
 
-#respdiv{
-  min-height: 30ex;
-  border: 3px outset blueviolet;
-  background-color: #91e0c0;
+#tabdiv{
+  background-color: black;
 }
 
 .resptext{
@@ -29,4 +27,12 @@ body {
   background-color: lightcyan;
   scroll-behavior: auto;
   font-weight: bold;
+}
+
+.tabbutton{
+  color: blue;
+  background-color: lightgrey;
+  border-style: groove;
+  border-radius: 3px;
+  border-bottom: none;
 }
