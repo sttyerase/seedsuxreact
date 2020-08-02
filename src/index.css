@@ -14,10 +14,6 @@ body {
   min-height: 40ex;
 }
 
-#tabdiv{
-  background-color: black;
-}
-
 .resptext{
   width: 90%;
   margin-left: 4%;
@@ -27,12 +23,4 @@ body {
   background-color: lightcyan;
   scroll-behavior: auto;
   font-weight: bold;
-}
-
-.tabbutton{
-  color: blue;
-  background-color: lightgrey;
-  border-style: groove;
-  border-radius: 3px;
-  border-bottom: none;
 }

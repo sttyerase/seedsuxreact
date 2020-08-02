@@ -1,0 +1,11 @@
+.tabbutton{
+    color: blue;
+    background-color: lightgrey;
+    border-style: groove;
+    border-radius: 3px;
+    border-bottom: none;
+}
+
+#tabsdiv{
+    background-color: black;
+}

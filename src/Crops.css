@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-.buttondiv{
+#buttonsdiv{
   position: relative;
   width: available;
   background-color: lime;

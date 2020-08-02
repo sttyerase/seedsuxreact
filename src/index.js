@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import CropUI from "./App";
-import RespUI from "./Resp";
 import config from 'react-global-configuration';
+import './index.css';
+import CropUI from "./Crops";
+import RespUI from "./Resp";
+import TabsUI from "./Tabs";
 
 let debugux = process.env.DEBUGSEEDSUX;
 config.set({debugseedsux: `${debugux}`, sysname: "Seeds UX"});
@@ -24,10 +25,7 @@ ReactDOM.render(
 
 ReactDOM.render(
     <React.StrictMode>
-        <div id="apptabs">
-            <input type={"button"} className={"tabbutton"} value={"CROPS"}/>
-            <input type={"button"} className={"tabbutton"} value={"VARS"}/>
-        </div>
+        <TabsUI/>
     </React.StrictMode>,
-    document.getElementById('tabdiv')
+    document.getElementById('tabsdiv')
 );
