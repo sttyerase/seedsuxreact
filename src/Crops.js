@@ -11,9 +11,12 @@ import {
     resetFocus,
     resetForm,
     countDbRecords,
+    setDbTable
 } from './AppFunctions'
 import './Crops.css';
 import config from 'react-global-configuration';
+
+setDbTable("CROPS");
 
 function CropUI() {
   return (

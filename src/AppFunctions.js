@@ -1,9 +1,9 @@
 import config from "react-global-configuration";
 
-let dbname = "";
+let _dbtable = "JACKASS";
 
 async function findrecordbyid() {
-    if(!validatecropid()) {
+    if(!validateid()) {
         document.getElementById("cropid").focus();
         return;
     } ; // IF
@@ -147,7 +147,7 @@ async function adddata() {
 } // ADDDATA()
 
 async function updatedata() {
-    if(!validatecropid()) {
+    if(!validateid()) {
         document.getElementById("cropid").focus();
         return;
     } ; // IF
@@ -189,7 +189,7 @@ async function updatedata() {
 } // UPDATEDATA()
 
 async function deletedata() {
-    if(!validatecropid()) {
+    if(!validateid()) {
         document.getElementById("cropid").focus();
         return;
     } ; // IF
@@ -233,7 +233,7 @@ async function countDbRecords() {
             return response.json();
         })
         .then(data => {
-            document.getElementById("resptext").value = "Count of records in " + dbname + " database: " + data;
+            document.getElementById("resptext").value = "Count of records in " + _dbtable + " database: " + data;
         })
         .catch(function (error) {
             if (config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
@@ -247,7 +247,7 @@ async function countDbRecords() {
  * ============== BEGIN SUPPORT FUNCTION SECTION ====================
  */
 
-function validatecropid() {
+function validateid() {
     var theId = document.getElementById("cropid").value;
     if(config.get('debugseedsux')) console.log("Validate crop id entry: " + theId);
     if ("" === theId || theId < 0) {
@@ -290,6 +290,10 @@ function resetFocus() {
     document.getElementById("cropid").focus();
 } // RESETFOCUS()
 
+function setDbTable(tableName) {
+    _dbtable = tableName;
+} // SETDBTABLE(TABLENAME)
+
 export {
     findrecordbyid,
     listAll,
@@ -302,4 +306,5 @@ export {
     resetFocus,
     resetAll,
     resetMessageBoard,
+    setDbTable
 }
