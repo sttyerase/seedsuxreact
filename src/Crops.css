@@ -2,12 +2,6 @@
   text-align: center;
 }
 
-#buttonsdiv{
-  position: relative;
-  width: available;
-  background-color: lime;
-}
-
 .dataentry{
   position: relative;
   margin: auto;
