@@ -9,7 +9,7 @@ import {
     resetAll,
     updatedata
 } from "./AppFunctions";
-import "./Buttons.css"
+import "./ButtonsUI.css"
 function ButtonsUI() {
     return(
         <div id="buttonsdiv">

@@ -1,7 +1,7 @@
 import React from "react";
-import './Resp.css';
+import './ResponseDisplay.css';
 
-function RespUI() {
+function ResponseDisplay() {
     return(
         <div id={"respdiv"}>
             <textarea id="resptext" className="resptext" disabled/>
@@ -9,4 +9,4 @@ function RespUI() {
     );
 }
 
-export default RespUI;
+export default ResponseDisplay;

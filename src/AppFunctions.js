@@ -251,7 +251,7 @@ function validateid() {
     var theId = document.getElementById("cropid").value;
     if(config.get('debugseedsux')) console.log("Validate crop id entry: " + theId);
     if ("" === theId || theId < 0) {
-        alert("Please enter 0 or a number for the crop id.");
+        alert("Please enter a number for the crop id.");
         return false;
     } // IF
     return true;

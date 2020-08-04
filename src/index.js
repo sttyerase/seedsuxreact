@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import config from 'react-global-configuration';
 import './index.css';
-import CropUI from "./Crops";
-import RespUI from "./Resp";
+import CropsUI from "./CropsUI";
+import ResponseDisplay from "./ResponseDisplay";
 // import TabsUI from "./Tabs";
 import TabsController from "./TabsController";
 import ButtonsUI from "./ButtonsUI";
@@ -20,7 +20,7 @@ ReactDOM.render(
 
 ReactDOM.render(
   <React.StrictMode>
-    <CropUI />
+    <CropsUI />
   </React.StrictMode>,
       document.getElementById('root')
 );
@@ -34,7 +34,7 @@ ReactDOM.render(
 
 ReactDOM.render(
     <React.StrictMode>
-        <RespUI/>
+        <ResponseDisplay/>
     </React.StrictMode>,
     document.getElementById('respdiv')
 );

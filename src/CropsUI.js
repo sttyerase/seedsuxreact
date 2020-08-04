@@ -2,12 +2,12 @@ import React from 'react';
 import {
     setDbTable
 } from './AppFunctions'
-import './Crops.css';
+import './CropsUI.css';
 import config from 'react-global-configuration';
 
 setDbTable("CROPS");
 
-function CropUI() {
+function CropsUI() {
   return (
       <form id="dataform">
         <label className="datalabel" htmlFor="cropid">Crop Id:</label><br/>
@@ -22,5 +22,5 @@ function CropUI() {
   );
 } // FUNCTION APP()
 
-export default CropUI;
+export default CropsUI;
 
