@@ -1,15 +1,12 @@
 import React from 'react';
-import {
-    setDbTable
-} from './AppFunctions'
-import './CropsUI.css';
-import config from 'react-global-configuration';
+import {setDbTable} from './AppFunctions';
+import './UIs.css';
 
 setDbTable("CROPS");
 
 function CropsUI() {
   return (
-      <form id="dataform">
+      <form className="dataform" id={"cropsform"}>
         <label className="datalabel" htmlFor="cropid">Crop Id:</label><br/>
         <input id="cropid" type="text" className="datanumber"/><br/>
         <label className="datalabel" htmlFor="cropname">Crop Name:</label><br/>
@@ -20,7 +17,7 @@ function CropsUI() {
         <input id="cropicccode" type="number" className="datanumber"/><br/>
       </form>
   );
-} // FUNCTION APP()
+} // CROPSUI()
 
 export default CropsUI;
 

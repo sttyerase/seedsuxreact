@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .dataentry{
   position: relative;
   margin: auto;
@@ -12,7 +8,7 @@
   border: 2px solid yellow;
 }
 
-#dataform{
+.dataform{
   position: relative;
   margin: auto;
   top: 3ex;
