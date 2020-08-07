@@ -3,3 +3,13 @@
     border: 3px outset blueviolet;
     background-color: #91e0c0;
 }
+
+.resptext{
+    width: 90%;
+    margin-left: 4%;
+    margin-right: 2%;
+    min-height: inherit;
+    border: inset red;
+    background-color: lightcyan;
+    font-weight: bold;
+}

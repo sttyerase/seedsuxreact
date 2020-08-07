@@ -14,13 +14,3 @@ body {
   min-height: 40ex;
 }
 
-.resptext{
-  width: 90%;
-  margin-left: 4%;
-  margin-right: 2%;
-  min-height: inherit;
-  border: inset red;
-  background-color: lightcyan;
-  scroll-behavior: auto;
-  font-weight: bold;
-}

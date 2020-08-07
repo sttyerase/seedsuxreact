@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import config from 'react-global-configuration';
 import './index.css';
-import CropsUI from "./CropsUI";
 import ResponseDisplay from "./ResponseDisplay";
 // import TabsUI from "./Tabs";
 import TabsController from "./TabsController";
@@ -16,13 +15,6 @@ ReactDOM.render(
         <TabsController/>
     </React.StrictMode>,
     document.getElementById('tabsdiv')
-);
-
-ReactDOM.render(
-  <React.StrictMode>
-    <CropsUI />
-  </React.StrictMode>,
-      document.getElementById('root')
 );
 
 ReactDOM.render(
