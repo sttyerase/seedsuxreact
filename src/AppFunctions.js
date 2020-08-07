@@ -1,6 +1,6 @@
 import config from "react-global-configuration";
 
-let _dbtable = "JACKASS";
+let _dbtable = "MYJUNK";
 
 async function findrecordbyid() {
     if(!validateid()) {
@@ -75,6 +75,7 @@ async function listAllByName(){
             return response.json();
         })
         .then(data => {
+            resetForm();
             data.sort((a,b) => {
                 let ca = a.cropName.toLowerCase();
                 let cb = b.cropName.toLowerCase();
@@ -251,7 +252,7 @@ function validateid() {
     var theId = document.getElementById("cropid").value;
     if(config.get('debugseedsux')) console.log("Validate crop id entry: " + theId);
     if ("" === theId || theId < 0) {
-        alert("Please enter a number for the crop id.");
+        alert("Please enter a number > 0 for the crop id.");
         return false;
     } // IF
     return true;
