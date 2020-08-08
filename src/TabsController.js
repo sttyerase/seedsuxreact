@@ -4,6 +4,7 @@ import './TabsController.css';
 import config from "react-global-configuration";
 import CropsUI from "./CropsUI";
 import VarietiesUI from "./VarietiesUI";
+import {loadparams, resetAll} from "./AppFunctions";
 
 // TODO: ONCLICK FUNCTION CALL WITH () EXECUTES ON COMPONENT CREATE???? WTF
 function TabsController() {
@@ -28,8 +29,14 @@ function setActivePane(event) {
         tabItems[indx].className = tabItems[indx].className.replace(" active","");
     } // FOR 2
     ReactDOM.unmountComponentAtNode(document.getElementById("root"));
-    if(targName === "crops") ReactDOM.render(<CropsUI/>,document.getElementById("root"));
-    else ReactDOM.render(<VarietiesUI/>,document.getElementById("root"));
+    if(targName === "crops") {
+        ReactDOM.render(<CropsUI/>,document.getElementById("root"));
+        loadparams("CROPS")
+    }else if(targName === "varieties"){
+        ReactDOM.render(<VarietiesUI/>,document.getElementById("root"));
+        loadparams("VARIETIES")
+    }
+    resetAll();
 } // SETACTIVEPANE()
 
 export default TabsController;

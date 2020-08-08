@@ -12,7 +12,7 @@ function VarietiesUI() {
         <label className="datalabel" htmlFor="varietydescription">Variety Description:</label><br/>
         <input id="varietydescription" type="text" className="datatext"/><br/>
         <label className="datalabel" htmlFor="cropid">Crop Id:</label><br/>
-        <input id="cropid" type="text" className="datatext"/><br/>
+        <input id="cropid" type="text" className="datanumber"/><br/>
       </form>
   );
 } // FUNCTION APP()

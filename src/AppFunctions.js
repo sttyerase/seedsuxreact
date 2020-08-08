@@ -1,6 +1,6 @@
 import config from "react-global-configuration";
 
-let _dbtable = "MYJUNK";
+let _dbtable = "MYJUNK",mainString = "junk",requrl = "http://junk";
 
 async function findrecordbyid() {
     if(!validateid()) {
@@ -20,11 +20,11 @@ async function findrecordbyid() {
         })
         .then(data => {
             resetMessageBoard();
-            document.getElementById("resptext").value = "Found crop record for id: " + seekval;
             document.getElementById("cropid").value = data.valueOf()["cropId"];
             document.getElementById("cropname").value = data.valueOf()["cropName"];
             document.getElementById("cropdescription").value = data.valueOf()["cropDescription"];
             document.getElementById("cropicccode").value = data.valueOf()["cropICCCode"];
+            document.getElementById("resptext").value = "Found crop record for id: " + seekval;
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
@@ -35,7 +35,7 @@ async function findrecordbyid() {
 
 async function listAll(){
     let myReq = new Request("http://localhost:8080/seedinspection/crops/all");
-    if(config.get('debugseedsux')) console.log("Finding all crops by id.");
+    if(config.get('debugseedsux')) console.log("Finding all by id.");
     await fetch(myReq)
         .then(response => {
             if(response.status !== 200) {
@@ -99,7 +99,6 @@ async function listAllByName(){
     resetFocus();
 } // LISTALLBYNAME()
 
-// TODO: ADDDATA() NEEDS TO EVENTUALLY BE A SEPARATE SCREEN
 async function adddata() {
     // VALIDATE DATA INPUTS
     if(!validateicccode()) {
@@ -295,6 +294,14 @@ function setDbTable(tableName) {
     _dbtable = tableName;
 } // SETDBTABLE(TABLENAME)
 
+function loadparams(tableName) {
+    setDbTable(tableName);
+    if(tableName === "CROPS"){
+        mainString = "crop";
+        requrl = "http://localhost:8080/seedinspection/crops/";
+    }
+} // LOADPARAMS(STRING)
+
 export {
     findrecordbyid,
     listAll,
@@ -307,5 +314,6 @@ export {
     resetFocus,
     resetAll,
     resetMessageBoard,
-    setDbTable
+    setDbTable,
+    loadparams
 }
