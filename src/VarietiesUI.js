@@ -1,10 +1,10 @@
 import React from 'react';
-import {setDbTable} from './AppFunctions';
+import {loadparams} from './AppFunctions';
 import './UIs.css';
 
 function VarietiesUI() {
   return (
-      <form className="dataform" id={"varietiesform"} onLoad={setDbTable("VARIETIES")}>
+      <form className="dataform" id={"varietiesform"} onLoad={loadparams("VARIETIES")}>
         <label className="datalabel" htmlFor="varietyid">Variety Id:</label><br/>
         <input id="varietyid" type="text" className="datanumber"/><br/>
         <label className="datalabel" htmlFor="varietyname">Variety Name:</label><br/>

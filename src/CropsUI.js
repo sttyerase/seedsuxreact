@@ -1,10 +1,10 @@
 import React from 'react';
-import {setDbTable} from './AppFunctions';
+import {loadparams} from './AppFunctions';
 import './UIs.css';
 
 function CropsUI() {
   return (
-      <form className="dataform" id={"cropsform"} onLoad={setDbTable("CROPS")}>
+      <form className="dataform" id={"cropsform"} onLoad={loadparams("CROPS")}>
         <label className="datalabel" htmlFor="cropid">Crop Id:</label><br/>
         <input id="cropid" type="text" className="datanumber"/><br/>
         <label className="datalabel" htmlFor="cropname">Crop Name:</label><br/>

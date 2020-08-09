@@ -275,10 +275,11 @@ function resetAll(){
 
 function resetForm(){
     if(config.get('debugseedsux')) console.log("Clear the form data.");
-    document.getElementById("cropid").value = ""
-    document.getElementById("cropname").value = ""
-    document.getElementById("cropdescription").value = "";
-    document.getElementById("cropicccode").value = "";
+    let dataForm = document.getElementsByClassName("dataform");
+    let inputTags = dataForm.item(0).getElementsByTagName("input");
+    for(let indx = 0; indx < inputTags.length; indx++){
+        inputTags.item(indx).value = "";
+    } // FOR
 }  // RESETFORM()
 
 function resetMessageBoard() {
@@ -299,7 +300,7 @@ function loadparams(tableName) {
     if(tableName === "CROPS"){
         mainString = "crop";
         requrl = "http://localhost:8080/seedinspection/crops/";
-    }
+    } // IF
 } // LOADPARAMS(STRING)
 
 export {
@@ -314,6 +315,5 @@ export {
     resetFocus,
     resetAll,
     resetMessageBoard,
-    setDbTable,
     loadparams
 }
