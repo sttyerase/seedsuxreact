@@ -1,11 +1,11 @@
 import React from 'react';
-import {loadparams} from './AppFunctions';
+import {initPane} from './AppFunctions';
 import './UIs.css';
 
 // DATA INPUT UIs WILL HAVE ONLY DATA INPUTS. SUBMIT BUTTONS GO IN BUTTONSUI PANEL.
 function VarietiesUI() {
   return (
-      <form className="dataform" id={"varietiesform"} onLoad={loadparams("VARIETIES")}>
+      <form className="dataform" id={"varietiesform"} onLoad={initPane("VARIETIES")}>
         <label className="datalabel" htmlFor="varietyid">Variety Id:</label><br/>
         <input id="varietyid" type="text" className="datanumber"/><br/>
         <label className="datalabel" htmlFor="varietyname">Variety Name:</label><br/>

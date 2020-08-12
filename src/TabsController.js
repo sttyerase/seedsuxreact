@@ -4,7 +4,6 @@ import './TabsController.css';
 import config from "react-global-configuration";
 import CropsUI from "./CropsUI";
 import VarietiesUI from "./VarietiesUI";
-import {loadparams, resetAll} from "./AppFunctions";
 
 // TODO: ONCLICK FUNCTION CALL WITH () EXECUTES ON COMPONENT CREATE???? WTF
 function TabsController() {

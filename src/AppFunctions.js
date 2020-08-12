@@ -1,14 +1,14 @@
 import config from "react-global-configuration";
 
-let _dbtable = "MYJUNK",mainString = "junk",requrl = "http://junk";
+let _dbtable = "MYJUNK",plString = "junks", sngString = "junk";
 
 async function findrecordbyid() {
     if(!validateid()) {
-        document.getElementById("cropid").focus();
+        document.getElementById(sngString + "id").focus();
         return;
     } ; // IF
     var seekval = document.getElementById("cropid").value;
-    let myReq = new Request("http://localhost:8080/seedinspection/crops/id/" + seekval);
+    let myReq = new Request("http://localhost:8080/seedinspection/" + plString + "/id/" + seekval);
     if(config.get('debugseedsux')) console.log("Looking for crop id: " + seekval);
     await fetch(myReq)
         .then(response => {
@@ -33,34 +33,38 @@ async function findrecordbyid() {
     resetFocus();
 } // FINDRECORDBYID()
 
-async function listAll(){
-    let myReq = new Request("http://localhost:8080/seedinspection/crops/all");
-    if(config.get('debugseedsux')) console.log("Finding all by id.");
+async function listAllById() {
+    let myReq = new Request("http://localhost:8080/seedinspection/" + plString + "/all");
+    if(config.get('debugseedsux')) console.log("Finding all " + plString + " by id.");
     await fetch(myReq)
         .then(response => {
             if(response.status !== 200) {
-                throw Error("Crop list not found: " + response.status);
+                throw Error(plString + " list not found: " + response.status);
             } // IF
             return response.json();
         })
         .then(data => {
             resetForm();
-            //TODO: WHY DO I NEED TO "STRINGIFY" A RESPONSE THAT IS ALREADY "STRINGIFIED" AT THE SOURCE??
-            // document.getElementById("resptext").value = JSON.stringify(data,null,2);
             resetMessageBoard();
             data.forEach((myD) => {
-                let num = String("      " + myD.cropId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                document.getElementById("resptext").value += (`${num} | ${myD.cropDescription}\n`);
+                if(_dbtable === "CROPS") {
+                    let num = String("      " + myD.cropId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
+                    document.getElementById("resptext").value += (`${num} | ${myD.cropDescription}\n`);
+                } else if(_dbtable === "VARIETIES") {
+                    let num = String("      " + myD.varietyId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
+                    let cid = String("      " + myD.varietyCropId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
+                    document.getElementById("resptext").value += (`${num} | ${cid} | ${myD.varietyDescription}\n`);
+                } // IF-ELSE
             });
         })
-        .catch( function(error){
+        .catch( function(error) {
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
             document.getElementById("resptext").value = "FIND FAILURE:" + error;
         });
     resetFocus();
 } // LISTALL()
 
-async function listAllByName(){
+async function listAllByName() {
     let myReq = new Request("http://localhost:8080/seedinspection/crops/all");
     if(config.get('debugseedsux')) console.log("Finding all crops by name.");
     let myHeaders = new Headers();
@@ -70,11 +74,12 @@ async function listAllByName(){
     await fetch(myReq,myInit)
         .then(response => {
             if(response.status !== 200) {
-                throw Error("Crop list not found: " + response.status);
+                throw Error(plString + " list not found: " + response.status);
             } // IF
             return response.json();
         })
         .then(data => {
+            resetMessageBoard();
             resetForm();
             data.sort((a,b) => {
                 let ca = a.cropName.toLowerCase();
@@ -83,9 +88,6 @@ async function listAllByName(){
                 if(ca > cb){return 1; }
                 return 0;
             });
-            /** COMMENT OUT FOR DEBUGGING
-             **/
-            resetMessageBoard();
             data.forEach((myD) => {
                 let num = String("      " + myD.cropId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
                 document.getElementById("resptext").value += (`${num} | ${myD.cropDescription}\n`);
@@ -288,24 +290,28 @@ function resetMessageBoard() {
 } // RESETMESSAGEBOARD()
 
 function resetFocus() {
-    document.getElementById("cropid").focus();
+    // FOCUS ON THE FIRST INPUT ITEM ON THE PANEL
+    document.getElementsByClassName("dataform").item(0).getElementsByTagName("input").item(0).focus();
 } // RESETFOCUS()
 
 function setDbTable(tableName) {
     _dbtable = tableName;
 } // SETDBTABLE(TABLENAME)
 
-function loadparams(tableName) {
+function initPane(tableName) {
     setDbTable(tableName);
     if(tableName === "CROPS"){
-        mainString = "crop";
-        requrl = "http://localhost:8080/seedinspection/crops/";
-    } // IF
+        plString = "crops";
+        sngString = "crop";
+    } else if(tableName === "VARIETIES") {
+        plString = "varieties";
+        sngString = "variety";
+    } // IF-ELSE
 } // LOADPARAMS(STRING)
 
 export {
     findrecordbyid,
-    listAll,
+    listAllById,
     listAllByName,
     adddata,
     updatedata,
@@ -315,5 +321,8 @@ export {
     resetFocus,
     resetAll,
     resetMessageBoard,
-    loadparams
+    initPane
 }
+
+// TODO: WHY DO I NEED TO "STRINGIFY" A RESPONSE THAT IS ALREADY "STRINGIFIED" AT THE SOURCE??
+// document.getElementById("resptext").value = JSON.stringify(data,null,2);

@@ -4,7 +4,7 @@ import {
     countDbRecords,
     deletedata,
     findrecordbyid,
-    listAll,
+    listAllById,
     listAllByName,
     resetAll,
     updatedata
@@ -17,7 +17,7 @@ function ButtonsUI() {
             <input className="datasubmit" type="button" value="UPDATE REC"     onClick={updatedata}/>
             <input className="datasubmit" type="button" value="ADD REC"        onClick={adddata}/>
             <input className="datasubmit" type="button" value="DEL REC"        onClick={deletedata}/>
-            <input className="datasubmit" type="button" value="LIST BY ID"     onClick={listAll}/>
+            <input className="datasubmit" type="button" value="LIST BY ID"     onClick={listAllById}/>
             <input className="datasubmit" type="button" value="LIST BY NAME"   onClick={listAllByName}/>
             <input className="datasubmit" type="button" value="CLEAR FORM"     onClick={resetAll}/>
             <input className="datasubmit" type="button" value="GET COUNT"      onClick={countDbRecords}/>

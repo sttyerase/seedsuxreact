@@ -1,11 +1,11 @@
 import React from 'react';
-import {loadparams} from './AppFunctions';
+import {initPane} from './AppFunctions';
 import './UIs.css';
 
 // DATA INPUT UIs WILL HAVE ONLY DATA INPUTS. SUBMIT BUTTONS GO IN BUTTONSUI PANEL.
 function CropsUI() {
   return (
-      <form className="dataform" id={"cropsform"} onLoad={loadparams("CROPS")}>
+      <form className="dataform" id={"cropsform"} onLoad={initPane("CROPS")}>
         <label className="datalabel" htmlFor="cropid">Crop Id:</label><br/>
         <input id="cropid" type="text" className="datanumber"/><br/>
         <label className="datalabel" htmlFor="cropname">Crop Name:</label><br/>
