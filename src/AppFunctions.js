@@ -1,6 +1,6 @@
 import config from "react-global-configuration";
 
-let _dbtable = "MYJUNK",plString = "junks", sngString = "junk";
+let _dbtable = "MYJUNK", plString = "junks", sngString = "junk", apiurl = "junkstring";
 
 async function findrecordbyid() {
     if(!validateid()) {
@@ -8,7 +8,7 @@ async function findrecordbyid() {
         return;
     } ; // IF
     var seekval = document.getElementById("cropid").value;
-    let myReq = new Request("http://localhost:8080/seedinspection/" + plString + "/id/" + seekval);
+    let myReq = new Request(apiurl + plString + "/id/" + seekval);
     if(config.get('debugseedsux')) console.log("Looking for crop id: " + seekval);
     await fetch(myReq)
         .then(response => {
@@ -34,7 +34,7 @@ async function findrecordbyid() {
 } // FINDRECORDBYID()
 
 async function listAllById() {
-    let myReq = new Request("http://localhost:8080/seedinspection/" + plString + "/all");
+    let myReq = new Request(apiurl + plString + "/all");
     if(config.get('debugseedsux')) console.log("Finding all " + plString + " by id.");
     await fetch(myReq)
         .then(response => {
@@ -65,7 +65,7 @@ async function listAllById() {
 } // LISTALL()
 
 async function listAllByName() {
-    let myReq = new Request("http://localhost:8080/seedinspection/crops/all");
+    let myReq = new Request(apiurl + plString + "/all");
     if(config.get('debugseedsux')) console.log("Finding all crops by name.");
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
@@ -119,7 +119,7 @@ async function adddata() {
     } // IF3
     // CROPID IS AUTOINCREMENT. SET ENTRY VALUE TO NULL
     document.getElementById("cropid").value = "";
-    let myReq = new Request("http://localhost:8080/seedinspection/crops/new" );
+    let myReq = new Request(apiurl + plString + "/new");
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
     // let cid = document.getElementById("cropid").value;
@@ -158,7 +158,7 @@ async function updatedata() {
         return;
     } ;
     var seekval = document.getElementById("cropid").value;
-    let myReq = new Request("http://localhost:8080/seedinspection/crops/" + seekval);
+    let myReq = new Request(apiurl + plString + "/" + seekval);
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
     let cid = document.getElementById("cropid").value;
@@ -197,7 +197,7 @@ async function deletedata() {
     } ; // IF
     var seekval = document.getElementById("cropid").value;
     var seekname = document.getElementById("cropname").value;
-    let myReq = new Request("http://localhost:8080/seedinspection/crops/delete/" + seekval);
+    let myReq = new Request(apiurl + plString + "/delete/" + seekval);
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const myInit = {
@@ -224,7 +224,7 @@ async function deletedata() {
 async function countDbRecords() {
     resetForm();
     resetMessageBoard();
-    let myReq = new Request("http://localhost:8080/seedinspection/crops/rowcount");
+    let myReq = new Request(apiurl + plString + "/rowcount");
     if(config.get('debugseedsux')) console.log("Retrieving record count for crops.");
     await fetch(myReq)
         .then(response => {
@@ -307,6 +307,7 @@ function initPane(tableName) {
         plString = "varieties";
         sngString = "variety";
     } // IF-ELSE
+    apiurl = config.get('appurl');
 } // LOADPARAMS(STRING)
 
 export {
