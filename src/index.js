@@ -18,6 +18,13 @@ console.log("CONFIGURATION:\n     APIURL: " + apiurl + "  || DEBUG: " + config.g
 
 ReactDOM.render(
     <React.StrictMode>
+        <h3>{config.get('sysname')}</h3>
+    </React.StrictMode>,
+    document.getElementById('headdiv')
+);
+
+ReactDOM.render(
+    <React.StrictMode>
         <TabsController/>
     </React.StrictMode>,
     document.getElementById('tabsdiv')

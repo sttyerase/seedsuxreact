@@ -1,6 +1,7 @@
 .tab-list {
     border-bottom: 1px solid #ccc;
     padding-left: 2px;
+    background-color: coral;
 }
 
 .tab-list-item {

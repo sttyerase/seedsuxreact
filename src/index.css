@@ -14,3 +14,7 @@ body {
   min-height: 40ex;
 }
 
+h1,h2,h3{
+  display: inline;
+  margin-left: 30%;
+}
