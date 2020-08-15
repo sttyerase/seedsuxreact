@@ -3,13 +3,18 @@ import ReactDOM from 'react-dom';
 import config from 'react-global-configuration';
 import './index.css';
 import ResponseDisplay from "./ResponseDisplay";
-// import TabsUI from "./Tabs";
 import TabsController from "./TabsController";
 import ButtonsUI from "./ButtonsUI";
 import CropsUI from "./CropsUI";
 
-let debugux = process.env.DEBUGSEEDSUX;
-config.set({debugseedsux: `${debugux}`, sysname: "Seeds UX"});
+let debugux = true, apiurl  = process.env.REACT_APP_APIURL;
+// EXAMPLE OF HOW TO SET BOOLEAN IN REACT-GLOBAL-CONFIGURATION
+if(process.env.REACT_APP_DEBUGSEEDSUX === "true") debugux = true; else debugux = false;
+config.set( {debugseedsux : debugux,
+    sysname : "Seed Inspection User Screens",
+    appurl : `${apiurl}`} );
+
+console.log("CONFIGURATION:\n     APIURL: " + apiurl + "  || DEBUG: " + config.get("debugseedsux") + " : " + debugux);
 
 ReactDOM.render(
     <React.StrictMode>
@@ -32,6 +37,7 @@ ReactDOM.render(
     document.getElementById('respdiv')
 );
 
+// TELL APPLICATION TO LOAD CROPSUI ON STARTUP
 window.onload = function () {
     ReactDOM.render(
         <React.StrictMode>
