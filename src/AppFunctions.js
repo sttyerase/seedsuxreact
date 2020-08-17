@@ -69,7 +69,7 @@ async function listAllById() {
 
 async function listAllByName() {
     let myReq = new Request(apiurl + _pluralString + "/all");
-    if(config.get('debugseedsux')) console.log("Finding all crops by name.");
+    if(config.get('debugseedsux')) console.log("Finding all " + _pluralString + " by name.");
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
     const myInit = {method: 'GET',
@@ -127,6 +127,7 @@ async function adddata() {
     let ciccc = document.getElementById(_4thPositionKey).value;
     // FORMAT FORM ENTRY VALUES INTO JSON FOR REQUEST BODY
     let myBody =  `{"${_nameKey}": "${cname}","${_descriptionKey}": "${cdesc}","${_4thPositionKey}": ${ciccc} }`;
+
     const myInit = {method: 'POST',
         headers: myHeaders,
         body: myBody};
@@ -149,35 +150,35 @@ async function adddata() {
 
 async function updatedata() {
     if(!validateid()) {
-        document.getElementById("cropid").focus();
+        document.getElementById(_idKey).focus();
         return;
     } ; // IF
-    if(!validateicccode()) {
-        document.getElementById("cropicccode").focus();
+    if(_dbtable === "CROPS" && !validateicccode()) {
+        document.getElementById("cropICCCode").focus();
         return;
     } ;
-    var seekval = document.getElementById("cropid").value;
-    let myReq = new Request(apiurl + _pluralString + "/" + seekval);
+    var seekval = document.getElementById(_idKey).value;
+    let myReq = new Request(apiurl + _pluralString + "/update/" + seekval);
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
-    let cid = document.getElementById("cropid").value;
-    let cname = document.getElementById("cropname").value;
-    let cdesc = document.getElementById("cropdescription").value;
-    let ciccc = document.getElementById("cropicccode").value;
+    let cid = document.getElementById(_idKey).value;
+    let cname = document.getElementById(_nameKey).value;
+    let cdesc = document.getElementById(_descriptionKey).value;
+    let ciccc = document.getElementById(_4thPositionKey).value;
     // FORMAT FORM ENTRY VALUES INTO JSON FOR REQUEST BODY
-    let myBody =  `{"cropId": ${cid} ,"cropName": "${cname}","cropDescription": "${cdesc}","cropICCCode": ${ciccc} }`;
+    let myBody =  `{"${_idKey}": ${cid} ,"${_nameKey}": "${cname}","${_descriptionKey}": "${cdesc}","${_4thPositionKey}": ${ciccc} }`;
     const myInit = {method: 'PUT',
         headers: myHeaders,
         body: myBody};
-    if(config.get('debugseedsux')) console.log("Updating crop id: " + seekval);
-    if(config.get('debugseedsux')) console.log("Updating crop id: " + myBody);
+    if(config.get('debugseedsux')) console.log("Updating " + _singularString + " id: " + seekval);
+    if(config.get('debugseedsux')) console.log("Updating " + _singularString + " with: " + myBody);
     await fetch(myReq, myInit)
         .then(response => {
             if(response.status !== 200) {
                 resetForm();
-                throw Error("Crop id " + seekval + " not found in database: " + response.status);
+                throw Error(_singularString + " id " + seekval + " not found in database: " + response.status);
             } // IF
-            document.getElementById("resptext").value = "Updated crop record for id: " + seekval;
+            document.getElementById("resptext").value = "Updated " + _singularString + " record for id: " + seekval;
             return response.json();
         })
         .catch( function(error){
@@ -191,11 +192,11 @@ async function updatedata() {
 
 async function deletedata() {
     if(!validateid()) {
-        document.getElementById("cropid").focus();
+        document.getElementById(_idKey).focus();
         return;
     } ; // IF
-    var seekval = document.getElementById("cropid").value;
-    var seekname = document.getElementById("cropname").value;
+    var seekval = document.getElementById(_idKey).value;
+    var seekname = document.getElementById(_nameKey).value;
     let myReq = new Request(apiurl + _pluralString + "/delete/" + seekval);
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -203,14 +204,14 @@ async function deletedata() {
         method: 'DELETE',
         headers: myHeaders
     };
-    if (config.get('debugseedsux')) console.log("Deleting crop id: " + seekval);
+    if (config.get('debugseedsux')) console.log("Deleting " + _singularString + " id: " + seekval);
     await fetch(myReq, myInit)
         .then(response => {
             if (response.status !== 200) {
                 resetForm();
-                throw Error("Crop id " + seekval + " not found in database: " + response.status);
+                throw Error( _singularString + " id " + seekval + " not found in database: " + response.status);
             } // IF
-            document.getElementById("resptext").value = "Deleted crop record for id: " + seekval + " CROP: " + seekname;
+            document.getElementById("resptext").value = "Deleted " + _singularString + " record for id: " + seekval + _singularString + ": " + seekname;
             return response.json();
         })
         .catch(function (error) {
@@ -224,7 +225,7 @@ async function countDbRecords() {
     resetForm();
     resetMessageBoard();
     let myReq = new Request(apiurl + _pluralString + "/rowcount");
-    if(config.get('debugseedsux')) console.log("Retrieving record count for crops.");
+    if(config.get('debugseedsux')) console.log("Retrieving record count for " + _pluralString + ".");
     await fetch(myReq)
         .then(response => {
             if (response.status !== 200) {
