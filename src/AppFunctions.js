@@ -1,30 +1,39 @@
 import config from "react-global-configuration";
 
-let _dbtable = "MYJUNK", plString = "junks", sngString = "junk", apiurl = "junkstring";
+// APPFUNCTIONS GLOBALS
+let _dbtable = "MYJUNK",
+    _pluralString = "junks",      // PLURAL NAME VALUE OF THE TABLE IN QUESTION
+    _singularString = "junk",     // SINGULAR NAME VALUE OF THE TABLE IN QUESTION
+    _idKey          = "junkId",
+    _nameKey        = "junkName",
+    _descriptionKey = "junkDescription",
+    _4thPositionKey = "junk4thPosition",
+    apiurl = "http://junkhost"
+;
 
 async function findrecordbyid() {
     if(!validateid()) {
-        document.getElementById(sngString + "id").focus();
+        document.getElementById(_idKey).focus();
         return;
     } ; // IF
-    var seekval = document.getElementById("cropid").value;
-    let myReq = new Request(apiurl + plString + "/id/" + seekval);
-    if(config.get('debugseedsux')) console.log("Looking for crop id: " + seekval);
+    var seekval = document.getElementById(_idKey).value;
+    let myReq = new Request(apiurl + _pluralString + "/id/" + seekval);
+    if(config.get('debugseedsux')) console.log("Looking for " + _singularString + " id: " + seekval);
     await fetch(myReq)
         .then(response => {
             if(response.status !== 200) {
                 resetForm();
-                throw Error("Crop Id " + seekval + " not found in database: " + response.status);
+                throw Error(_singularString + " Id " + seekval + " not found in database: " + response.status);
             } // IF
             return response.json();
         })
         .then(data => {
             resetMessageBoard();
-            document.getElementById("cropid").value = data.valueOf()["cropId"];
-            document.getElementById("cropname").value = data.valueOf()["cropName"];
-            document.getElementById("cropdescription").value = data.valueOf()["cropDescription"];
-            document.getElementById("cropicccode").value = data.valueOf()["cropICCCode"];
-            document.getElementById("resptext").value = "Found crop record for id: " + seekval;
+            document.getElementById(_idKey).value = data.valueOf()[_idKey];
+            document.getElementById(_nameKey).value = data.valueOf()[_nameKey];
+            document.getElementById(_descriptionKey).value = data.valueOf()[_descriptionKey];
+            document.getElementById(_4thPositionKey).value = data.valueOf()[_4thPositionKey];
+            document.getElementById("resptext").value = "Found " + _singularString + " record for id: " + seekval;
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
@@ -34,12 +43,12 @@ async function findrecordbyid() {
 } // FINDRECORDBYID()
 
 async function listAllById() {
-    let myReq = new Request(apiurl + plString + "/all");
-    if(config.get('debugseedsux')) console.log("Finding all " + plString + " by id.");
+    let myReq = new Request(apiurl + _pluralString + "/all");
+    if(config.get('debugseedsux')) console.log("Finding all " + _pluralString + " by id.");
     await fetch(myReq)
         .then(response => {
             if(response.status !== 200) {
-                throw Error(plString + " list not found: " + response.status);
+                throw Error(_pluralString + " list not found: " + response.status);
             } // IF
             return response.json();
         })
@@ -47,14 +56,8 @@ async function listAllById() {
             resetForm();
             resetMessageBoard();
             data.forEach((myD) => {
-                if(_dbtable === "CROPS") {
-                    let num = String("      " + myD.cropId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                    document.getElementById("resptext").value += (`${num} | ${myD.cropDescription}\n`);
-                } else if(_dbtable === "VARIETIES") {
-                    let num = String("      " + myD.varietyId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                    let cid = String("      " + myD.varietyCropId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                    document.getElementById("resptext").value += (`${num} | ${cid} | ${myD.varietyDescription}\n`);
-                } // IF-ELSE
+                let num = String("      " + myD[_idKey]).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
+                document.getElementById("resptext").value += (`${num} | ${myD[_descriptionKey]}\n`);
             });
         })
         .catch( function(error) {
@@ -65,7 +68,7 @@ async function listAllById() {
 } // LISTALL()
 
 async function listAllByName() {
-    let myReq = new Request(apiurl + plString + "/all");
+    let myReq = new Request(apiurl + _pluralString + "/all");
     if(config.get('debugseedsux')) console.log("Finding all crops by name.");
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
@@ -74,7 +77,7 @@ async function listAllByName() {
     await fetch(myReq,myInit)
         .then(response => {
             if(response.status !== 200) {
-                throw Error(plString + " list not found: " + response.status);
+                throw Error(_pluralString + " list not found: " + response.status);
             } // IF
             return response.json();
         })
@@ -82,15 +85,15 @@ async function listAllByName() {
             resetMessageBoard();
             resetForm();
             data.sort((a,b) => {
-                let ca = a.cropName.toLowerCase();
-                let cb = b.cropName.toLowerCase();
+                let ca = a[_nameKey].toLowerCase();
+                let cb = b[_nameKey].toLowerCase();
                 if(ca < cb){return -1;}
                 if(ca > cb){return 1; }
                 return 0;
             });
             data.forEach((myD) => {
-                let num = String("      " + myD.cropId).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                document.getElementById("resptext").value += (`${num} | ${myD.cropDescription}\n`);
+                let num = String("      " + myD[_idKey]).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
+                document.getElementById("resptext").value += (`${num} | ${myD[_descriptionKey]}\n`);
             });
             // document.getElementById("resptext").value = JSON.stringify(data,null,2);
         })
@@ -119,7 +122,7 @@ async function adddata() {
     } // IF3
     // CROPID IS AUTOINCREMENT. SET ENTRY VALUE TO NULL
     document.getElementById("cropid").value = "";
-    let myReq = new Request(apiurl + plString + "/new");
+    let myReq = new Request(apiurl + _pluralString + "/new");
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
     // let cid = document.getElementById("cropid").value;
@@ -158,7 +161,7 @@ async function updatedata() {
         return;
     } ;
     var seekval = document.getElementById("cropid").value;
-    let myReq = new Request(apiurl + plString + "/" + seekval);
+    let myReq = new Request(apiurl + _pluralString + "/" + seekval);
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
     let cid = document.getElementById("cropid").value;
@@ -197,7 +200,7 @@ async function deletedata() {
     } ; // IF
     var seekval = document.getElementById("cropid").value;
     var seekname = document.getElementById("cropname").value;
-    let myReq = new Request(apiurl + plString + "/delete/" + seekval);
+    let myReq = new Request(apiurl + _pluralString + "/delete/" + seekval);
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const myInit = {
@@ -224,7 +227,7 @@ async function deletedata() {
 async function countDbRecords() {
     resetForm();
     resetMessageBoard();
-    let myReq = new Request(apiurl + plString + "/rowcount");
+    let myReq = new Request(apiurl + _pluralString + "/rowcount");
     if(config.get('debugseedsux')) console.log("Retrieving record count for crops.");
     await fetch(myReq)
         .then(response => {
@@ -250,10 +253,10 @@ async function countDbRecords() {
  */
 
 function validateid() {
-    var theId = document.getElementById("cropid").value;
-    if(config.get('debugseedsux')) console.log("Validate crop id entry: " + theId);
+    var theId = document.getElementById(_idKey).value;
+    if(config.get('debugseedsux')) console.log("Validate " + _singularString + " id entry: " + theId);
     if ("" === theId || theId < 0) {
-        alert("Please enter a number > 0 for the crop id.");
+        alert("Please enter a number > 0 for the " + _singularString + " id.");
         return false;
     } // IF
     return true;
@@ -301,11 +304,19 @@ function setDbTable(tableName) {
 function initPane(tableName) {
     setDbTable(tableName);
     if(tableName === "CROPS"){
-        plString = "crops";
-        sngString = "crop";
+        _pluralString = "crops";
+        _singularString = "crop";
+        _idKey          = "cropId";
+        _nameKey        = "cropName";
+        _descriptionKey = "cropDescription";
+        _4thPositionKey = "cropICCCode";
     } else if(tableName === "VARIETIES") {
-        plString = "varieties";
-        sngString = "variety";
+        _pluralString = "varieties";
+        _singularString = "variety";
+        _idKey          = "varietyId";
+        _nameKey        = "varietyName";
+        _descriptionKey = "varietyDescription";
+        _4thPositionKey = "varietyCropId";
     } // IF-ELSE
     apiurl = config.get('appurl');
 } // LOADPARAMS(STRING)
