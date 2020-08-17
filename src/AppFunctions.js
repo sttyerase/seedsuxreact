@@ -106,42 +106,38 @@ async function listAllByName() {
 
 async function adddata() {
     // VALIDATE DATA INPUTS
-    if(!validateicccode()) {
+    if(_dbtable === "CROPS" && !validateicccode()) {
         document.getElementById("cropicccode").focus();
         return;
     } ; // IF1
-    if (document.getElementById("cropname").value === "") {
-        alert("Please enter text for the crop name.");
-        document.getElementById("cropname").focus();
+    if (document.getElementById(_nameKey).value === "") {
+        alert("Please enter text for the " + _singularString + " name.");
+        document.getElementById(_nameKey).focus();
         return;
     } // IF2
-    if (document.getElementById("cropdescription").value === "") {
-        alert("Please enter text for the crop description.");
-        document.getElementById("cropdescription").focus();
-        return;
-    } // IF3
-    // CROPID IS AUTOINCREMENT. SET ENTRY VALUE TO NULL
-    document.getElementById("cropid").value = "";
+
+    // _IDKEYS ARE AUTOINCREMENT. SET ENTRY VALUE TO NULL
+    document.getElementById(_idKey).value = "";
     let myReq = new Request(apiurl + _pluralString + "/new");
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
     // let cid = document.getElementById("cropid").value;
-    let cname = document.getElementById("cropname").value;
-    let cdesc = document.getElementById("cropdescription").value;
-    let ciccc = document.getElementById("cropicccode").value;
+    let cname = document.getElementById(_nameKey).value;
+    let cdesc = document.getElementById(_descriptionKey).value;
+    let ciccc = document.getElementById(_4thPositionKey).value;
     // FORMAT FORM ENTRY VALUES INTO JSON FOR REQUEST BODY
-    let myBody =  `{"cropName": "${cname}","cropDescription": "${cdesc}","cropICCCode": ${ciccc} }`;
+    let myBody =  `{"${_nameKey}": "${cname}","${_descriptionKey}": "${cdesc}","${_4thPositionKey}": ${ciccc} }`;
     const myInit = {method: 'POST',
         headers: myHeaders,
         body: myBody};
-    if(config.get('debugseedsux')) console.log("Adding new crop record: " + myBody);
+    if(config.get('debugseedsux')) console.log("Adding new " + _singularString + " record: " + myBody);
     await fetch(myReq, myInit)
         .then(response => {
             if(response.status !== 200) {
                 resetForm();
-                throw Error("Failed to add new crop record: " + response.status);
+                throw Error("Failed to add new " + _singularString + " record: " + response.status);
             } // IF
-            document.getElementById("resptext").value = "Successfully added new crop record.";
+            document.getElementById("resptext").value = "Successfully added new " + _singularString + " record.";
             return response.json();
         })
         .catch( function(error){
@@ -263,7 +259,7 @@ function validateid() {
 } // VALIDATECROPID()
 
 function validateicccode() {
-    var theCode = document.getElementById("cropicccode").value;
+    var theCode = document.getElementById("cropICCCode").value;
     if(config.get('debugseedsux')) console.log("Validate ICC Code: " + theCode);
     if ("" === theCode || theCode < 0) {
         alert("Please enter 0 or a number for the ICC Code.");
