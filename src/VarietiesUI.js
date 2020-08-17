@@ -6,14 +6,14 @@ import './UIs.css';
 function VarietiesUI() {
   return (
       <form className="dataform" id={"varietiesform"} onLoad={initPane("VARIETIES")}>
-        <label className="datalabel" htmlFor="varietyid">Variety Id:</label><br/>
-        <input id="varietyid" type="text" className="datanumber"/><br/>
-        <label className="datalabel" htmlFor="varietyname">Variety Name:</label><br/>
-        <input id="varietyname" type="text" className="datatext"/><br/>
-        <label className="datalabel" htmlFor="varietydescription">Variety Description:</label><br/>
-        <input id="varietydescription" type="text" className="datatext"/><br/>
-        <label className="datalabel" htmlFor="cropid">Crop Id:</label><br/>
-        <input id="cropid" type="text" className="datanumber"/><br/>
+        <label className="datalabel" htmlFor="varietyId">Variety Id:</label><br/>
+        <input id="varietyId" type="text" className="datanumber"/><br/>
+        <label className="datalabel" htmlFor="varietyName">Variety Name:</label><br/>
+        <input id="varietyName" type="text" className="datatext"/><br/>
+        <label className="datalabel" htmlFor="varietyDescription">Variety Description:</label><br/>
+        <input id="varietyDescription" type="text" className="datatext"/><br/>
+        <label className="datalabel" htmlFor="varietyCropId">Crop Id:</label><br/>
+        <input id="varietyCropId" type="text" className="datanumber"/><br/>
       </form>
   );
 } // FUNCTION APP()
