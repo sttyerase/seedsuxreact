@@ -35,11 +35,11 @@ async function findrecordbyid() {
             document.getElementById(_nameKey).value = data.valueOf()[_nameKey];
             document.getElementById(_descriptionKey).value = data.valueOf()[_descriptionKey];
             document.getElementById(_4thPositionKey).value = data.valueOf()[_4thPositionKey];
-            document.getElementById("resptext").value = "Found " + _singularString + " record for id: " + seekval;
+            document.getElementById("messageboard").value = "Found " + _singularString + " record for id: " + seekval;
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
-            document.getElementById("resptext").value = "FIND FAILURE:" + error;
+            document.getElementById("messageboard").value = "FIND FAILURE:" + error;
         });
     resetFocus();
 } // FINDRECORDBYID()
@@ -69,11 +69,11 @@ async function findrecordbyname() {
             document.getElementById(_nameKey).value = data.valueOf()[_nameKey];
             document.getElementById(_descriptionKey).value = data.valueOf()[_descriptionKey];
             document.getElementById(_4thPositionKey).value = data.valueOf()[_4thPositionKey];
-            document.getElementById("resptext").value = "Found " + _singularString + " record for name: " + seekval;
+            document.getElementById("messageboard").value = "Found " + _singularString + " record for name: " + seekval;
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
-            document.getElementById("resptext").value = "FIND FAILURE:" + error;
+            document.getElementById("messageboard").value = "FIND FAILURE:" + error;
         });
     resetFocus();
 } // FINDRECORDBYID()
@@ -93,12 +93,12 @@ async function listAllById() {
             resetMessageBoard();
             data.forEach((myD) => {
                 let num = String("      " + myD[_idKey]).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                document.getElementById("resptext").value += (`${num} | ${myD[_descriptionKey]}\n`);
+                document.getElementById("messageboard").value += (`${num} | ${myD[_descriptionKey]}\n`);
             });
         })
         .catch( function(error) {
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
-            document.getElementById("resptext").value = "FIND FAILURE:" + error;
+            document.getElementById("messageboard").value = "FIND FAILURE:" + error;
         });
     resetFocus();
 } // LISTALL()
@@ -129,13 +129,13 @@ async function listAllByName() {
             });
             data.forEach((myD) => {
                 let num = String("      " + myD[_idKey]).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                document.getElementById("resptext").value += (`${num} | ${myD[_descriptionKey]}\n`);
+                document.getElementById("messageboard").value += (`${num} | ${myD[_descriptionKey]}\n`);
             });
-            // document.getElementById("resptext").value = JSON.stringify(data,null,2);
+            // document.getElementById("messageboard").value = JSON.stringify(data,null,2);
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
-            document.getElementById("resptext").value = "FIND FAILURE:" + error;
+            document.getElementById("messageboard").value = "FIND FAILURE:" + error;
         });
     resetFocus();
 } // LISTALLBYNAME()
@@ -174,12 +174,12 @@ async function adddata() {
                 resetForm();
                 throw Error("Failed to add new " + _singularString + " record: " + response.status);
             } // IF
-            document.getElementById("resptext").value = "Successfully added new " + _singularString + " record.";
+            document.getElementById("messageboard").value = "Successfully added new " + _singularString + " record.";
             return response.json();
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("NEW RECORD FAILURE:" + error);
-            document.getElementById("resptext").value = "NEW RECORD FAILURE:" + error;
+            document.getElementById("messageboard").value = "NEW RECORD FAILURE:" + error;
         });
     resetFocus();
 } // ADDDATA()
@@ -215,12 +215,12 @@ async function updatedata() {
                 resetForm();
                 throw Error(_singularString + " id " + seekval + " not found in database: " + response.status);
             } // IF
-            document.getElementById("resptext").value = "Updated " + _singularString + " record for id: " + seekval;
+            document.getElementById("messageboard").value = "Updated " + _singularString + " record for id: " + seekval;
             return response.json();
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("UPDATE FAILURE:" + error);
-            document.getElementById("resptext").value = "UPDATE FAILURE:" + error;
+            document.getElementById("messageboard").value = "UPDATE FAILURE:" + error;
         });
     /** COMMENT OUT FOR DEBUG
      **/
@@ -249,12 +249,12 @@ async function deletedata() {
                 resetForm();
                 throw Error( _singularString + " id " + seekval + " not found in database: " + response.status);
             } // IF
-            document.getElementById("resptext").value = "Deleted " + _singularString + " record for id: " + seekval + _singularString + ": " + seekname;
+            document.getElementById("messageboard").value = "Deleted " + _singularString + " record for id: " + seekval + _singularString + ": " + seekname;
             return response.json();
         })
         .catch(function (error) {
             if (config.get('debugseedsux')) console.log("DELETE FAILURE:" + error);
-            document.getElementById("resptext").value = "DELETE FAILURE:" + error;
+            document.getElementById("messageboard").value = "DELETE FAILURE:" + error;
         });
     resetFocus();
 } // DELETEDATA()
@@ -273,11 +273,11 @@ async function countDbRecords() {
             return response.json();
         })
         .then(data => {
-            document.getElementById("resptext").value = "Count of records in " + _dbtable + " database: " + data;
+            document.getElementById("messageboard").value = "Count of records in " + _dbtable + " database: " + data;
         })
         .catch(function (error) {
             if (config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
-            document.getElementById("resptext").value = "FIND FAILURE:" + error;
+            document.getElementById("messageboard").value = "FIND FAILURE:" + error;
         });
     resetFocus();
 }
@@ -324,7 +324,7 @@ function resetForm(){
 
 function resetMessageBoard() {
     if(config.get('debugseedsux')) console.log("Clear the message board.");
-    document.getElementById("resptext").value = "";
+    document.getElementById("messageboard").value = "";
 } // RESETMESSAGEBOARD()
 
 function resetFocus() {
@@ -373,4 +373,4 @@ export {
 }
 
 // TODO: WHY DO I NEED TO "STRINGIFY" A RESPONSE THAT IS ALREADY "STRINGIFIED" AT THE SOURCE??
-// document.getElementById("resptext").value = JSON.stringify(data,null,2);
+// document.getElementById("messageboard").value = JSON.stringify(data,null,2);
