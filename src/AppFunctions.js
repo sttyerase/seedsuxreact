@@ -8,12 +8,14 @@ let _dbtable = "MYJUNK",
     _nameKey        = "junkName",
     _descriptionKey = "junkDescription",
     _4thPositionKey = "junk4thPosition",
+    _currentKey     = "currentJunk",
     apiurl = "http://junkhost"
 ;
 
 async function findrecordbyid() {
-    if(!validateid()) {
-        document.getElementById(_idKey).focus();
+    _currentKey = _idKey;
+    if(!validateinput()) {
+        document.getElementById(_currentKey).focus();
         return;
     } ; // IF
     var seekval = document.getElementById(_idKey).value;
@@ -34,6 +36,40 @@ async function findrecordbyid() {
             document.getElementById(_descriptionKey).value = data.valueOf()[_descriptionKey];
             document.getElementById(_4thPositionKey).value = data.valueOf()[_4thPositionKey];
             document.getElementById("resptext").value = "Found " + _singularString + " record for id: " + seekval;
+        })
+        .catch( function(error){
+            if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
+            document.getElementById("resptext").value = "FIND FAILURE:" + error;
+        });
+    resetFocus();
+} // FINDRECORDBYID()
+
+async function findrecordbyname() {
+    /*** COMMENT OUT / FIX LATER??
+     ***/
+    _currentKey = _nameKey;
+    if(!validateinput()) {
+        document.getElementById(_currentKey).focus();
+        return;
+    } ; // IF
+    var seekval = document.getElementById(_nameKey).value;
+    let myReq = new Request(apiurl + _pluralString + "/name/" + seekval);
+    if(config.get('debugseedsux')) console.log("Looking for " + _singularString + " name: " + seekval);
+    await fetch(myReq)
+        .then(response => {
+            if(response.status !== 200) {
+                resetForm();
+                throw Error(_singularString + " Name " + seekval + " not found in database: " + response.status);
+            } // IF
+            return response.json();
+        })
+        .then(data => {
+            resetMessageBoard();
+            document.getElementById(_idKey).value = data.valueOf()[_idKey];
+            document.getElementById(_nameKey).value = data.valueOf()[_nameKey];
+            document.getElementById(_descriptionKey).value = data.valueOf()[_descriptionKey];
+            document.getElementById(_4thPositionKey).value = data.valueOf()[_4thPositionKey];
+            document.getElementById("resptext").value = "Found " + _singularString + " record for name: " + seekval;
         })
         .catch( function(error){
             if(config.get('debugseedsux')) console.log("FIND FAILURE:" + error);
@@ -149,8 +185,9 @@ async function adddata() {
 } // ADDDATA()
 
 async function updatedata() {
-    if(!validateid()) {
-        document.getElementById(_idKey).focus();
+    _currentKey = _idKey;  // VALIDATE THIS FUNCTION USING THE ID KEY.
+    if(!validateinput()) {
+        document.getElementById(_currentKey).focus();
         return;
     } ; // IF
     if(_dbtable === "CROPS" && !validateicccode()) {
@@ -191,8 +228,9 @@ async function updatedata() {
 } // UPDATEDATA()
 
 async function deletedata() {
-    if(!validateid()) {
-        document.getElementById(_idKey).focus();
+    _currentKey = _idKey;
+    if(!validateinput()) {
+        document.getElementById(_currentKey).focus();
         return;
     } ; // IF
     var seekval = document.getElementById(_idKey).value;
@@ -249,11 +287,11 @@ async function countDbRecords() {
  * ============== BEGIN SUPPORT FUNCTION SECTION ====================
  */
 
-function validateid() {
-    var theId = document.getElementById(_idKey).value;
-    if(config.get('debugseedsux')) console.log("Validate " + _singularString + " id entry: " + theId);
-    if ("" === theId || theId < 0) {
-        alert("Please enter a number > 0 for the " + _singularString + " id.");
+function validateinput() {
+    var theVal = document.getElementById(_currentKey).value;
+    if(config.get('debugseedsux')) console.log("Validate " + _singularString + " id entry: " + theVal);
+    if ("" === theVal || theVal < 0) {
+        alert("Please enter a string or a value > 0 for the "+ _currentKey + ".");
         return false;
     } // IF
     return true;
@@ -320,6 +358,7 @@ function initPane(tableName) {
 
 export {
     findrecordbyid,
+    findrecordbyname,
     listAllById,
     listAllByName,
     adddata,
