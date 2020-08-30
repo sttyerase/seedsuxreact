@@ -19,7 +19,7 @@ async function findrecordbyid() {
         return;
     } ; // IF
     var seekval = document.getElementById(_idKey).value;
-    let myReq = new Request(apiurl + _pluralString + "/id/" + seekval);
+    let myReq = new Request(apiurl + _pluralString + "/find/id/" + seekval);
     if(config.get('debugseedsux')) console.log("Looking for " + _singularString + " id: " + seekval);
     await fetch(myReq)
         .then(response => {
@@ -53,7 +53,7 @@ async function findrecordbyname() {
         return;
     } ; // IF
     var seekval = document.getElementById(_nameKey).value;
-    let myReq = new Request(apiurl + _pluralString + "/name/" + seekval);
+    let myReq = new Request(apiurl + _pluralString + "/find/name/" + seekval);
     if(config.get('debugseedsux')) console.log("Looking for " + _singularString + " name: " + seekval);
     await fetch(myReq)
         .then(response => {
@@ -79,7 +79,7 @@ async function findrecordbyname() {
 } // FINDRECORDBYID()
 
 async function listAllById() {
-    let myReq = new Request(apiurl + _pluralString + "/all");
+    let myReq = new Request(apiurl + _pluralString + "/find/all");
     if(config.get('debugseedsux')) console.log("Finding all " + _pluralString + " by id.");
     await fetch(myReq)
         .then(response => {
@@ -104,7 +104,7 @@ async function listAllById() {
 } // LISTALL()
 
 async function listAllByName() {
-    let myReq = new Request(apiurl + _pluralString + "/all");
+    let myReq = new Request(apiurl + _pluralString + "/find/all");
     if(config.get('debugseedsux')) console.log("Finding all " + _pluralString + " by name.");
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
