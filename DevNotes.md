@@ -5,3 +5,5 @@
 
 1. To use a .env file, must run "yarn build", then "npm start" or "serve -s build" to serve the resulting build.
 
+// TODO: WHY DO I NEED TO "STRINGIFY" A RESPONSE THAT IS ALREADY "STRINGIFIED" AT THE SOURCE??
+// document.getElementById("messageboard").value = JSON.stringify(data,null,2);

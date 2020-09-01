@@ -78,7 +78,7 @@ async function findrecordbyname() {
     resetFocus();
 } // FINDRECORDBYID()
 
-async function listAllById() {
+async function listAllRecordsById() {
     let myReq = new Request(apiurl + _pluralString + "/find/all");
     if(config.get('debugseedsux')) console.log("Finding all " + _pluralString + " by id.");
     await fetch(myReq)
@@ -103,7 +103,7 @@ async function listAllById() {
     resetFocus();
 } // LISTALL()
 
-async function listAllByName() {
+async function listAllRecordsByName() {
     let myReq = new Request(apiurl + _pluralString + "/find/all");
     if(config.get('debugseedsux')) console.log("Finding all " + _pluralString + " by name.");
     let myHeaders = new Headers();
@@ -140,7 +140,7 @@ async function listAllByName() {
     resetFocus();
 } // LISTALLBYNAME()
 
-async function adddata() {
+async function addRecord() {
     // VALIDATE DATA INPUTS
     if(_dbtable === "CROPS" && !validateicccode()) {
         document.getElementById("cropicccode").focus();
@@ -184,7 +184,7 @@ async function adddata() {
     resetFocus();
 } // ADDDATA()
 
-async function updatedata() {
+async function updateRecord() {
     _currentKey = _idKey;  // VALIDATE THIS FUNCTION USING THE ID KEY.
     if(!validateinput()) {
         document.getElementById(_currentKey).focus();
@@ -227,7 +227,7 @@ async function updatedata() {
     resetFocus();
 } // UPDATEDATA()
 
-async function deletedata() {
+async function deleteRecord() {
     _currentKey = _idKey;
     if(!validateinput()) {
         document.getElementById(_currentKey).focus();
@@ -359,11 +359,11 @@ function initPane(tableName) {
 export {
     findrecordbyid,
     findrecordbyname,
-    listAllById,
-    listAllByName,
-    adddata,
-    updatedata,
-    deletedata,
+    listAllRecordsById,
+    listAllRecordsByName,
+    addRecord,
+    updateRecord,
+    deleteRecord,
     countDbRecords,
     resetForm,
     resetFocus,
@@ -371,6 +371,3 @@ export {
     resetMessageBoard,
     initPane
 }
-
-// TODO: WHY DO I NEED TO "STRINGIFY" A RESPONSE THAT IS ALREADY "STRINGIFIED" AT THE SOURCE??
-// document.getElementById("messageboard").value = JSON.stringify(data,null,2);

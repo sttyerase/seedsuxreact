@@ -1,14 +1,14 @@
 import React from "react";
 import {
-    adddata,
+    addRecord,
     countDbRecords,
-    deletedata,
+    deleteRecord,
     findrecordbyid,
     findrecordbyname,
-    listAllById,
-    listAllByName,
+    listAllRecordsById,
+    listAllRecordsByName,
     resetAll,
-    updatedata
+    updateRecord
 } from "./AppFunctions";
 import "./ButtonsUI.css"
 function ButtonsUI() {
@@ -16,11 +16,11 @@ function ButtonsUI() {
         <div id="buttonsdiv">
             <input className="datasubmit" type="button" value="FIND BY ID"     onClick={findrecordbyid}/>
             <input className="datasubmit" type="button" value="FIND BY NAME"   onClick={findrecordbyname}/>
-            <input className="datasubmit" type="button" value="UPDATE REC"     onClick={updatedata}/>
-            <input className="datasubmit" type="button" value="ADD REC"        onClick={adddata}/>
-            <input className="datasubmit" type="button" value="DEL REC"        onClick={deletedata}/>
-            <input className="datasubmit" type="button" value="LIST BY ID"     onClick={listAllById}/>
-            <input className="datasubmit" type="button" value="LIST BY NAME"   onClick={listAllByName}/>
+            <input className="datasubmit" type="button" value="UPDATE REC"     onClick={updateRecord}/>
+            <input className="datasubmit" type="button" value="ADD REC"        onClick={addRecord}/>
+            <input className="datasubmit" type="button" value="DEL REC"        onClick={deleteRecord}/>
+            <input className="datasubmit" type="button" value="LIST BY ID"     onClick={listAllRecordsById}/>
+            <input className="datasubmit" type="button" value="LIST BY NAME"   onClick={listAllRecordsByName}/>
             <input className="datasubmit" type="button" value="CLEAR FORM"     onClick={resetAll}/>
             <input className="datasubmit" type="button" value="GET COUNT"      onClick={countDbRecords}/>
         </div>
