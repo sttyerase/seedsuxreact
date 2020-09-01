@@ -353,7 +353,7 @@ function initPane(tableName) {
         _descriptionKey = "varietyDescription";
         _4thPositionKey = "varietyCropId";
     } // IF-ELSE
-    apiurl = config.get('appurl');
+    apiurl = config.get('apiurl');
 } // LOADPARAMS(STRING)
 
 export {
@@ -369,5 +369,6 @@ export {
     resetFocus,
     resetAll,
     resetMessageBoard,
-    initPane
+    initPane,
+    apiurl
 }

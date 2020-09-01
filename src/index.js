@@ -12,7 +12,7 @@ let debugux = true, apiurl  = process.env.REACT_APP_APIURL;
 if(process.env.REACT_APP_DEBUGSEEDSUX === "true") debugux = true; else debugux = false;
 config.set( {debugseedsux : debugux,
     sysname : "Seed Inspection User Screens",
-    appurl : `${apiurl}`} );
+    apiurl : `${apiurl}`} );
 
 console.log("CONFIGURATION:\n     APIURL: " + apiurl + "  || DEBUG: " + config.get("debugseedsux") + " : " + debugux);
 
