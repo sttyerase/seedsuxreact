@@ -249,7 +249,7 @@ async function deleteRecord() {
                 resetForm();
                 throw Error( _singularString + " id " + seekval + " not found in database: " + response.status);
             } // IF
-            document.getElementById("messageboard").value = "Deleted " + _singularString + " record for id: " + seekval + _singularString + ": " + seekname;
+            document.getElementById("messageboard").value = "Deleted " + _singularString + " record for id: " + seekval + " ==> " + _singularString + ": " + seekname;
             return response.json();
         })
         .catch(function (error) {
@@ -356,6 +356,38 @@ function initPane(tableName) {
     apiurl = config.get('apiurl');
 } // LOADPARAMS(STRING)
 
+async function getCropsDropdownList() {
+    let myReq = new Request(apiurl + "/crops/find/all");
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type","application/json");
+    const myInit = {method: 'GET',
+        headers: myHeaders};
+    await fetch(myReq,myInit)
+        .then(response => {
+            if(response.status !== 200) {
+                throw Error("Crops select list not available: " + response.status);
+            } // IF
+            return response.json();
+        })
+        .then(data => {
+            data.sort((a,b) => {
+                let ca = a["cropName"].toLowerCase();
+                let cb = b["cropName"].toLowerCase();
+                if(ca < cb){return -1;}
+                if(ca > cb){return 1; }
+                return 0;
+            });
+            data.forEach((myD) => {
+                document.getElementById("varietyCropId").appendChild(new Option(myD["cropName"],myD["cropId"]));
+            });
+        })
+        .catch( function(error){
+            if(config.get('debugseedsux')) console.log("FAILURE TO LOAD CROPS DROPDOWN: " + error);
+            document.getElementById("messageboard").value = "FAILURE TO LOAD CROPS DROPDOWN: " + error;
+        });
+    document.getElementById("messageboard").value = "CREATED DROPDOWN LIST OF CROPS: \n";
+} // GETCROPSDROPDOWNLIST()
+
 export {
     findrecordbyid,
     findrecordbyname,
@@ -370,5 +402,6 @@ export {
     resetAll,
     resetMessageBoard,
     initPane,
+    getCropsDropdownList,
     apiurl
 }
