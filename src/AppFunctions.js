@@ -6,16 +6,16 @@ let _dbtable = "MYJUNK",
     _singularString = "junk",     // SINGULAR NAME VALUE OF THE TABLE IN QUESTION
     _idKey          = "junkId",
     _nameKey        = "junkName",
-    _descriptionKey = "junkDescription",
-    _4thPositionKey = "junk4thPosition",
-    _currentKey     = "currentJunk",
+    _3rdPositionKey = "junk3Data",
+    _4thPositionKey = "junk4Data",
+    _searchKey     = "searchJunk",
     apiurl = "http://junkhost"
 ;
 
 async function findrecordbyid() {
-    _currentKey = _idKey;
+    _searchKey = _idKey;
     if(!validateinput()) {
-        document.getElementById(_currentKey).focus();
+        document.getElementById(_searchKey).focus();
         return;
     } ; // IF
     var seekval = document.getElementById(_idKey).value;
@@ -33,7 +33,7 @@ async function findrecordbyid() {
             resetMessageBoard();
             document.getElementById(_idKey).value = data.valueOf()[_idKey];
             document.getElementById(_nameKey).value = data.valueOf()[_nameKey];
-            document.getElementById(_descriptionKey).value = data.valueOf()[_descriptionKey];
+            document.getElementById(_3rdPositionKey).value = data.valueOf()[_3rdPositionKey];
             document.getElementById(_4thPositionKey).value = data.valueOf()[_4thPositionKey];
             document.getElementById("messageboard").value = "Found " + _singularString + " record for id: " + seekval;
         })
@@ -47,9 +47,9 @@ async function findrecordbyid() {
 async function findrecordbyname() {
     /*** COMMENT OUT / FIX LATER??
      ***/
-    _currentKey = _nameKey;
+    _searchKey = _nameKey;
     if(!validateinput()) {
-        document.getElementById(_currentKey).focus();
+        document.getElementById(_searchKey).focus();
         return;
     } ; // IF
     var seekval = document.getElementById(_nameKey).value;
@@ -67,7 +67,7 @@ async function findrecordbyname() {
             resetMessageBoard();
             document.getElementById(_idKey).value = data.valueOf()[_idKey];
             document.getElementById(_nameKey).value = data.valueOf()[_nameKey];
-            document.getElementById(_descriptionKey).value = data.valueOf()[_descriptionKey];
+            document.getElementById(_3rdPositionKey).value = data.valueOf()[_3rdPositionKey];
             document.getElementById(_4thPositionKey).value = data.valueOf()[_4thPositionKey];
             document.getElementById("messageboard").value = "Found " + _singularString + " record for name: " + seekval;
         })
@@ -93,7 +93,7 @@ async function listAllRecordsById() {
             resetMessageBoard();
             data.forEach((myD) => {
                 let num = String("      " + myD[_idKey]).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                document.getElementById("messageboard").value += (`${num} | ${myD[_descriptionKey]}\n`);
+                document.getElementById("messageboard").value += (`${num} | ${myD[_3rdPositionKey]}\n`);
             });
         })
         .catch( function(error) {
@@ -129,7 +129,7 @@ async function listAllRecordsByName() {
             });
             data.forEach((myD) => {
                 let num = String("      " + myD[_idKey]).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                document.getElementById("messageboard").value += (`${num} | ${myD[_descriptionKey]}\n`);
+                document.getElementById("messageboard").value += (`${num} | ${myD[_3rdPositionKey]}\n`);
             });
             // document.getElementById("messageboard").value = JSON.stringify(data,null,2);
         })
@@ -159,10 +159,10 @@ async function addRecord() {
     myHeaders.append("Content-Type","application/json");
     // let cid = document.getElementById("cropid").value;
     let cname = document.getElementById(_nameKey).value;
-    let cdesc = document.getElementById(_descriptionKey).value;
+    let cdesc = document.getElementById(_3rdPositionKey).value;
     let ciccc = document.getElementById(_4thPositionKey).value;
     // FORMAT FORM ENTRY VALUES INTO JSON FOR REQUEST BODY
-    let myBody =  `{"${_nameKey}": "${cname}","${_descriptionKey}": "${cdesc}","${_4thPositionKey}": ${ciccc} }`;
+    let myBody =  `{"${_nameKey}": "${cname}","${_3rdPositionKey}": "${cdesc}","${_4thPositionKey}": ${ciccc} }`;
 
     const myInit = {method: 'POST',
         headers: myHeaders,
@@ -185,9 +185,9 @@ async function addRecord() {
 } // ADDDATA()
 
 async function updateRecord() {
-    _currentKey = _idKey;  // VALIDATE THIS FUNCTION USING THE ID KEY.
+    _searchKey = _idKey;  // VALIDATE THIS FUNCTION USING THE ID KEY.
     if(!validateinput()) {
-        document.getElementById(_currentKey).focus();
+        document.getElementById(_searchKey).focus();
         return;
     } ; // IF
     if(_dbtable === "CROPS" && !validateicccode()) {
@@ -200,10 +200,10 @@ async function updateRecord() {
     myHeaders.append("Content-Type","application/json");
     let cid = document.getElementById(_idKey).value;
     let cname = document.getElementById(_nameKey).value;
-    let cdesc = document.getElementById(_descriptionKey).value;
+    let cdesc = document.getElementById(_3rdPositionKey).value;
     let ciccc = document.getElementById(_4thPositionKey).value;
     // FORMAT FORM ENTRY VALUES INTO JSON FOR REQUEST BODY
-    let myBody =  `{"${_idKey}": ${cid} ,"${_nameKey}": "${cname}","${_descriptionKey}": "${cdesc}","${_4thPositionKey}": ${ciccc} }`;
+    let myBody =  `{"${_idKey}": ${cid} ,"${_nameKey}": "${cname}","${_3rdPositionKey}": "${cdesc}","${_4thPositionKey}": ${ciccc} }`;
     const myInit = {method: 'PUT',
         headers: myHeaders,
         body: myBody};
@@ -228,9 +228,9 @@ async function updateRecord() {
 } // UPDATEDATA()
 
 async function deleteRecord() {
-    _currentKey = _idKey;
+    _searchKey = _idKey;
     if(!validateinput()) {
-        document.getElementById(_currentKey).focus();
+        document.getElementById(_searchKey).focus();
         return;
     } ; // IF
     var seekval = document.getElementById(_idKey).value;
@@ -288,10 +288,10 @@ async function countDbRecords() {
  */
 
 function validateinput() {
-    var theVal = document.getElementById(_currentKey).value;
+    var theVal = document.getElementById(_searchKey).value;
     if(config.get('debugseedsux')) console.log("Validate " + _singularString + " id entry: " + theVal);
     if ("" === theVal || theVal < 0) {
-        alert("Please enter a string or a value > 0 for the "+ _currentKey + ".");
+        alert("Please enter a string or a value > 0 for the "+ _searchKey + ".");
         return false;
     } // IF
     return true;
@@ -343,14 +343,14 @@ function initPane(tableName) {
         _singularString = "crop";
         _idKey          = "cropId";
         _nameKey        = "cropName";
-        _descriptionKey = "cropDescription";
+        _3rdPositionKey = "cropDescription";
         _4thPositionKey = "cropICCCode";
     } else if(tableName === "VARIETIES") {
         _pluralString = "varieties";
         _singularString = "variety";
         _idKey          = "varietyId";
         _nameKey        = "varietyName";
-        _descriptionKey = "varietyDescription";
+        _3rdPositionKey = "varietyDescription";
         _4thPositionKey = "varietyCropId";
     } // IF-ELSE
     apiurl = config.get('apiurl');
@@ -385,7 +385,6 @@ async function getCropsDropdownList() {
             if(config.get('debugseedsux')) console.log("FAILURE TO LOAD CROPS DROPDOWN: " + error);
             document.getElementById("messageboard").value = "FAILURE TO LOAD CROPS DROPDOWN: " + error;
         });
-    document.getElementById("messageboard").value = "CREATED DROPDOWN LIST OF CROPS: \n";
 } // GETCROPSDROPDOWNLIST()
 
 export {
