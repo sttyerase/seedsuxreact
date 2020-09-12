@@ -4,6 +4,7 @@ import './TabsController.css';
 import config from "react-global-configuration";
 import CropsUI from "./CropsUI";
 import VarietiesUI from "./VarietiesUI";
+import ProducersUI from "./ProducersUI";
 
 // TODO: ONCLICK FUNCTION CALL WITH () EXECUTES ON COMPONENT CREATE???? WTF
 function TabsController() {
@@ -11,6 +12,7 @@ function TabsController() {
         <div className="tab-list">
             <input type={"button"} className={"tab-list-item"} value={"CROPS"}     id={"crops"}     onClick={setActivePane}/>
             <input type={"button"} className={"tab-list-item"} value={"VARIETIES"} id={"varieties"} onClick={setActivePane}/>
+            <input type={"button"} className={"tab-list-item"} value={"PRODUCERS"} id={"producers"} onClick={setActivePane}/>
         </div>
     )
 } // TABSCONTROLLER()
@@ -23,6 +25,8 @@ function setActivePane(event) {
         ReactDOM.render(<CropsUI/>,document.getElementById("root"));
     }else if(targName === "varieties"){
         ReactDOM.render(<VarietiesUI/>,document.getElementById("root"));
+    }else if(targName === "producers"){
+        ReactDOM.render(<ProducersUI/>,document.getElementById("root"));
     }
 } // SETACTIVEPANE()
 
