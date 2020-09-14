@@ -14,7 +14,7 @@ function VarietiesUI() {
         <label className="datalabel" htmlFor="varietyName">Variety Name:</label><br/>
         <input id="varietyName" type="text" className="datatext"/><br/>
         <label className="datalabel" htmlFor="varietyDescription">Variety Description:</label><br/>
-        <input id="varietyDescription" type="text" className="datatext"/><br/>
+        <input id="varietyDescription" type="datatext" className="datatext"/><br/>
         <label className="datalabel" htmlFor="varietyCropId">Crop:</label><br/>
         <select id="varietyCropId" className="datadropdown"></select><br/>
       </form>

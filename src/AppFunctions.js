@@ -6,9 +6,10 @@ let _dbtable = "MYJUNK",
     _singularString = "junk",     // SINGULAR NAME VALUE OF THE TABLE IN QUESTION
     _idKey          = "junkId",
     _nameKey        = "junkName",
-    _3rdPositionKey = "junk3Data",
-    _4thPositionKey = "junk4Data",
     _searchKey     = "searchJunk",
+    positions      = 0,
+    position       = 0,
+    positionKey    = [],
     apiurl = "http://junkhost"
 ;
 
@@ -31,10 +32,9 @@ async function findrecordbyid() {
         })
         .then(data => {
             resetMessageBoard();
-            document.getElementById(_idKey).value = data.valueOf()[_idKey];
-            document.getElementById(_nameKey).value = data.valueOf()[_nameKey];
-            document.getElementById(_3rdPositionKey).value = data.valueOf()[_3rdPositionKey];
-            document.getElementById(_4thPositionKey).value = data.valueOf()[_4thPositionKey];
+            for(position = 0; position < positions; position++){
+                if(document.getElementById(positionKey[position]) != null) document.getElementById(positionKey[position]).value = data.valueOf()[positionKey[position]];
+            } // FOR
             document.getElementById("messageboard").value = "Found " + _singularString + " record for id: " + seekval;
         })
         .catch( function(error){
@@ -45,8 +45,6 @@ async function findrecordbyid() {
 } // FINDRECORDBYID()
 
 async function findrecordbyname() {
-    /*** COMMENT OUT / FIX LATER??
-     ***/
     _searchKey = _nameKey;
     if(!validateinput()) {
         document.getElementById(_searchKey).focus();
@@ -65,10 +63,9 @@ async function findrecordbyname() {
         })
         .then(data => {
             resetMessageBoard();
-            document.getElementById(_idKey).value = data.valueOf()[_idKey];
-            document.getElementById(_nameKey).value = data.valueOf()[_nameKey];
-            document.getElementById(_3rdPositionKey).value = data.valueOf()[_3rdPositionKey];
-            document.getElementById(_4thPositionKey).value = data.valueOf()[_4thPositionKey];
+            for(position = 0; position < positions; position++){
+                if(document.getElementById(positionKey[position]) != null) document.getElementById(positionKey[position]).value = data.valueOf()[positionKey[position]];
+            } // FOR
             document.getElementById("messageboard").value = "Found " + _singularString + " record for name: " + seekval;
         })
         .catch( function(error){
@@ -93,7 +90,7 @@ async function listAllRecordsById() {
             resetMessageBoard();
             data.forEach((myD) => {
                 let num = String("      " + myD[_idKey]).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                document.getElementById("messageboard").value += (`${num} | ${myD[_3rdPositionKey]}\n`);
+                document.getElementById("messageboard").value += (`${num} | ${myD[positionKey[2]]}\n`);
             });
         })
         .catch( function(error) {
@@ -129,7 +126,7 @@ async function listAllRecordsByName() {
             });
             data.forEach((myD) => {
                 let num = String("      " + myD[_idKey]).slice(-6);  // FIXED WIDTH FORMAT UP TO 999999
-                document.getElementById("messageboard").value += (`${num} | ${myD[_3rdPositionKey]}\n`);
+                document.getElementById("messageboard").value += (`${num} | ${myD[positionKey[2]]}\n`);
             });
             // document.getElementById("messageboard").value = JSON.stringify(data,null,2);
         })
@@ -157,13 +154,20 @@ async function addRecord() {
     let myReq = new Request(apiurl + _pluralString + "/new");
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
-    // let cid = document.getElementById("cropid").value;
-    let cname = document.getElementById(_nameKey).value;
-    let cdesc = document.getElementById(_3rdPositionKey).value;
-    let ciccc = document.getElementById(_4thPositionKey).value;
+    // HELPERS TO CREATE BODY ELEMENTS
+    let addArr = [], myBody = "{ ", spacer = ", ", textOrNumber;
+    // AQUIRE VALUES IN DATAFORM
+    for(position = 1; position < positions; position++){
+        addArr[position] = document.getElementById(positionKey[position]).value;
+    } // FOR 1
     // FORMAT FORM ENTRY VALUES INTO JSON FOR REQUEST BODY
-    let myBody =  `{"${_nameKey}": "${cname}","${_3rdPositionKey}": "${cdesc}","${_4thPositionKey}": ${ciccc} }`;
-
+    for(position = 1; position < positions; position++){
+        if(position < (positions - 1)) spacer = ", "; else spacer = " ";
+        if(document.getElementById(positionKey[position]).className === "datatext") textOrNumber = ` "${addArr[position]}" `;
+        else textOrNumber = addArr[position];
+        myBody = ` ${myBody} "${positionKey[position]}": ${textOrNumber} ${spacer}`;
+    } // FOR 2
+    myBody = myBody + " }";
     const myInit = {method: 'POST',
         headers: myHeaders,
         body: myBody};
@@ -198,12 +202,20 @@ async function updateRecord() {
     let myReq = new Request(apiurl + _pluralString + "/update/" + seekval);
     let myHeaders = new Headers();
     myHeaders.append("Content-Type","application/json");
-    let cid = document.getElementById(_idKey).value;
-    let cname = document.getElementById(_nameKey).value;
-    let cdesc = document.getElementById(_3rdPositionKey).value;
-    let ciccc = document.getElementById(_4thPositionKey).value;
+    // HELPERS TO CREATE BODY ELEMENTS
+    let addArr = [], myBody = "{ ", spacer = ", ", textOrNumber;
+    // AQUIRE VALUES IN DATAFORM
+    for(position = 0; position < positions; position++){
+        addArr[position] = document.getElementById(positionKey[position]).value;
+    } // FOR 1
     // FORMAT FORM ENTRY VALUES INTO JSON FOR REQUEST BODY
-    let myBody =  `{"${_idKey}": ${cid} ,"${_nameKey}": "${cname}","${_3rdPositionKey}": "${cdesc}","${_4thPositionKey}": ${ciccc} }`;
+    for(position = 0; position < positions; position++){
+        if(position < (positions - 1)) spacer = ", "; else spacer = " ";
+        if(document.getElementById(positionKey[position]).className === "datatext") textOrNumber = ` "${addArr[position]}" `;
+        else textOrNumber = addArr[position];
+        myBody = ` ${myBody} "${positionKey[position]}": ${textOrNumber} ${spacer}`;
+    } // FOR 2
+    myBody = myBody + " }";
     const myInit = {method: 'PUT',
         headers: myHeaders,
         body: myBody};
@@ -336,26 +348,6 @@ function setDbTable(tableName) {
     _dbtable = tableName;
 } // SETDBTABLE(TABLENAME)
 
-function initPane(tableName) {
-    setDbTable(tableName);
-    if(tableName === "CROPS"){
-        _pluralString = "crops";
-        _singularString = "crop";
-        _idKey          = "cropId";
-        _nameKey        = "cropName";
-        _3rdPositionKey = "cropDescription";
-        _4thPositionKey = "cropICCCode";
-    } else if(tableName === "VARIETIES") {
-        _pluralString = "varieties";
-        _singularString = "variety";
-        _idKey          = "varietyId";
-        _nameKey        = "varietyName";
-        _3rdPositionKey = "varietyDescription";
-        _4thPositionKey = "varietyCropId";
-    } // IF-ELSE
-    apiurl = config.get('apiurl');
-} // LOADPARAMS(STRING)
-
 async function getCropsDropdownList() {
     let myReq = new Request(apiurl + "/crops/find/all");
     let myHeaders = new Headers();
@@ -386,6 +378,46 @@ async function getCropsDropdownList() {
             document.getElementById("messageboard").value = "FAILURE TO LOAD CROPS DROPDOWN: " + error;
         });
 } // GETCROPSDROPDOWNLIST()
+
+function initPane(tableName) {
+    setDbTable(tableName);
+    if(tableName === "CROPS"){
+        _pluralString = "crops";
+        _singularString = "crop";
+        _idKey          = "cropId";
+        _nameKey        = "cropName";
+        positions       = 4;
+        positionKey[0]  = "cropId";
+        positionKey[1]  = "cropName";
+        positionKey[2]  = "cropDescription";
+        positionKey[3]  = "cropICCCode";
+    } else if(tableName === "VARIETIES") {
+        _pluralString = "varieties";
+        _singularString = "variety";
+        _idKey          = "varietyId";
+        _nameKey        = "varietyName";
+        positions       = 4;
+        positionKey[0]  = "varietyId";
+        positionKey[1]  = "varietyName";
+        positionKey[2]  = "varietyDescription";
+        positionKey[3]  = "varietyCropId";
+    } else if(tableName === "PRODUCERS") {
+        _pluralString   = "producers";
+        _singularString = "producer";
+        _idKey          = "producerId";
+        _nameKey        = "producerShortName";
+        positions       = 8;
+        positionKey[0]  = "producerId";
+        positionKey[1]  = "producerShortName";
+        positionKey[2]  = "producerName";
+        positionKey[3]  = "producerAddress1";
+        positionKey[4]  = "producerAddress2";
+        positionKey[5]  = "producerCity";
+        positionKey[6]  = "producerState";
+        positionKey[7]  = "producerZip";
+    } // IF-ELSE
+    apiurl = config.get('apiurl');
+} // LOADPARAMS(STRING)
 
 export {
     findrecordbyid,

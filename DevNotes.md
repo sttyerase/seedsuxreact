@@ -5,5 +5,9 @@
 
 1. To use a .env file, must run "yarn build", then "npm start" or "serve -s build" to serve the resulting build.
 
+1. At this point, the assumption will be made that every table will have a primary key/id column (_idKey).
+
+1. Not every table will have a primary searchable text column.
+
 // TODO: WHY DO I NEED TO "STRINGIFY" A RESPONSE THAT IS ALREADY "STRINGIFIED" AT THE SOURCE??
 // document.getElementById("messageboard").value = JSON.stringify(data,null,2);
