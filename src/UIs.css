@@ -1,40 +1,52 @@
-.dataentry{
-  position: relative;
-  margin: auto;
-  top: 3em;
-  display: table;
-  width: 90%;
-  background-color: lightcoral;
-  border: 2px solid yellow;
-}
-
 .dataform{
-  position: relative;
-  margin: auto;
-  top: 3ex;
   display: table;
-  width: 90%;
+  position: relative;
+  text-align: left;
+  margin: auto;
+  width: 95%;
   border-style: outset;
-  border-width: 6px;
+  border-width: 3px;
   border-color: #dedede;
   background-color: lightskyblue;
+  font-family: sans-serif;
+  font-size: 9pt;
+}
+
+.labelinputpair{
+  display: table-row;
 }
 
 .datalabel{
+  display: table-cell;
   position: relative;
+  width: 25%;
   left: 1em;
 }
 
 .datatext{
+  display: table-cell;
   position: relative;
   left: 3em;
   width: 70%;
   background-color: #dedede;
   border-style: inset;
   border-color: crimson;
+  max-height: 2ex;
+}
+
+.datanumber{
+  display: table-cell;
+  position: relative;
+  left: 3em;
+  width: 3em;
+  background-color: #dedede;
+  border-style: inset;
+  border-color: crimson;
+  max-height: 2ex;
 }
 
 .datadropdown{
+  display: table-cell;
   position: relative;
   padding: 2px 1px 2px 4px;
   left: 3em;
@@ -42,15 +54,6 @@
   background-color: #dedede;
   border-style: inset;
   border-color: #fcf820;
-}
-
-.datanumber{
-  position: relative;
-  left: 3em;
-  width: 3em;
-  background-color: #dedede;
-  border-style: inset;
-  border-color: crimson;
 }
 
 .datasubmit{
