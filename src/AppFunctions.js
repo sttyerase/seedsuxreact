@@ -1,4 +1,5 @@
 import config from "react-global-configuration";
+import statesData from "./USstates.json";
 
 // APPFUNCTIONS GLOBALS
 let _dbtable = "MYJUNK",
@@ -148,7 +149,6 @@ async function addRecord() {
         document.getElementById(_nameKey).focus();
         return;
     } // IF2
-
     // _IDKEYS ARE AUTOINCREMENT. SET ENTRY VALUE TO NULL
     document.getElementById(_idKey).value = "";
     let myReq = new Request(apiurl + _pluralString + "/new");
@@ -157,7 +157,7 @@ async function addRecord() {
     // HELPERS TO CREATE BODY ELEMENTS
     let addArr = [], myBody = "{ ", spacer = ", ", textOrNumber;
     // AQUIRE VALUES IN DATAFORM
-    for(position = 1; position < positions; position++){
+    for(position = 1; position < positions; position++){  // START AT 1 BECAUSE RECORD ID IS PROVIDED BY DATABASE
         addArr[position] = document.getElementById(positionKey[position]).value;
     } // FOR 1
     // FORMAT FORM ENTRY VALUES INTO JSON FOR REQUEST BODY
@@ -167,7 +167,7 @@ async function addRecord() {
         else textOrNumber = addArr[position];
         myBody = ` ${myBody} "${positionKey[position]}": ${textOrNumber} ${spacer}`;
     } // FOR 2
-    myBody = myBody + " }";
+    myBody = myBody + " }"; // CLOSE THE JSON TEXT
     const myInit = {method: 'POST',
         headers: myHeaders,
         body: myBody};
@@ -176,12 +176,14 @@ async function addRecord() {
         .then(response => {
             if(response.status !== 200) {
                 resetForm();
-                throw Error("Failed to add new " + _singularString + " record: " + response.status);
+                throw new Error("Failed to add new " + _singularString + " record: " + response.body);
             } // IF
-            document.getElementById("messageboard").value = "Successfully added new " + _singularString + " record.";
             return response.json();
         })
-        .catch( function(error){
+        .then(data => {
+            document.getElementById("messageboard").value = "Successfully added new " + _singularString + " record: ==> " + data[_nameKey];
+        })
+        .catch( error => {
             if(config.get('debugseedsux')) console.log("NEW RECORD FAILURE:" + error);
             document.getElementById("messageboard").value = "NEW RECORD FAILURE:" + error;
         });
@@ -379,6 +381,12 @@ async function getCropsDropdownList() {
         });
 } // GETCROPSDROPDOWNLIST()
 
+function getStatesDropdownList() {
+    statesData.forEach((myD) => {
+        document.getElementById("producerState").appendChild(new Option(myD["Code"],myD["Code"]));
+    });
+} // GETSTATESDROPDOWNLIST()
+
 function initPane(tableName) {
     setDbTable(tableName);
     if(tableName === "CROPS"){
@@ -434,5 +442,6 @@ export {
     resetMessageBoard,
     initPane,
     getCropsDropdownList,
+    getStatesDropdownList,
     apiurl
 }

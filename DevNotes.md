@@ -9,5 +9,6 @@
 
 1. Not every table will have a primary searchable text column.
 
-// TODO: WHY DO I NEED TO "STRINGIFY" A RESPONSE THAT IS ALREADY "STRINGIFIED" AT THE SOURCE??
+// TODO: WHY DO I NEED TO "STRINGIFY" A RESPONSE THAT IS ALREADY "STRINGIFIED" BY THE API??
 // document.getElementById("messageboard").value = JSON.stringify(data,null,2);
+// TODO: EXAMINE ALL METHODS IN APPFUNCTIONS.JS FOR CONSISTENCY

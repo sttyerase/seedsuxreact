@@ -1,9 +1,12 @@
 import React from 'react';
-import {initPane} from './AppFunctions';
+import {initPane,getStatesDropdownList} from './AppFunctions';
 import './UIs.css';
 
 // DATA INPUT UIs WILL HAVE ONLY DATA INPUTS. SUBMIT BUTTONS GO IN BUTTONSUI PANEL.
 function ProducersUI() {
+    React.useEffect(() => {
+        getStatesDropdownList();
+    },[]);
   return (
       <form className="dataform" id={"producersform"} onLoad={initPane("PRODUCERS")}>
             <div className={"labelinputpair"}>
@@ -32,7 +35,7 @@ function ProducersUI() {
             </div>
             <div className={"labelinputpair"}>
         <label className="datalabel" htmlFor="producerState">Producer State:</label>
-        <input id="producerState" type="text" className="datatext"/>
+                <select id="producerState" type="text" className="datatext"></select>
             </div>
             <div className={"labelinputpair"}>
         <label className="datalabel" htmlFor="producerZip">Producer Zip Code:</label>
