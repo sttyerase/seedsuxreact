@@ -1,0 +1,41 @@
+apiVersion: 1.0.0
+metadata:
+  generateName: dbmi-
+projects:
+  -
+    name: seedsux
+    source:
+      type: git
+      location: 'https://github.com/sttyerase/seedsux'
+components:
+  -
+    type: chePlugin
+    id: che-incubator/typescript/latest
+    memoryLimit: 512Mi
+  -
+    type: dockerimage
+    alias: nodejs
+    image: 'quay.io/eclipse/che-nodejs8-centos:7.18.2'
+    memoryLimit: 512Mi
+    endpoints:
+      -
+        name: nodejs
+        port: 4100
+    mountSources: true
+commands:
+  -
+    name: install all required dependencies
+    actions:
+      -
+        type: exec
+        component: nodejs
+        command: npm install
+        workdir: '${CHE_PROJECTS_ROOT}/seedsux'
+  -
+    name: start the local server
+    actions:
+      -
+        type: exec
+        component: nodejs
+        command: npm start
+        workdir: '${CHE_PROJECTS_ROOT}/seedsux'
