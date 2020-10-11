@@ -15,7 +15,7 @@ components:
   -
     type: dockerimage
     alias: nodejs
-    image: 'quay.io/eclipse/che-nodejs8-centos:7.18.2'
+    image: 'quay.io/eclipse/che-nodejs10-community:7.18.2'
     memoryLimit: 512Mi
     endpoints:
       -
